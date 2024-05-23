@@ -1,0 +1,68 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <img src="assets/layout/images/logo-white.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">
+        <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px;">
+                <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+                    <div class="text-center mb-5">
+                        <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3">
+                        <div class="text-900 text-3xl font-medium mb-3">Registro</div>
+                        <span class="text-600 font-medium">Complete el formulario para registrarse</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nombre" class="block text-900 text-xl font-medium mb-2">Nombre</label>
+                        <input id="nombre" type="text" formControlName="nombre" pInputText class="w-full md:w-30rem mb-2" placeholder="Nombre completo" style="padding: 1rem">
+                        <div *ngIf="signupForm.get('nombre')?.errors && signupForm.get('nombre')?.dirty" class="text-red-600 text-sm mt-1">El nombre es requerido.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cedula" class="block text-900 font-medium text-xl mb-2">Cédula</label>
+                        <input id="cedula" type="text" formControlName="cedula" pInputText class="w-full md:w-30rem mb-2" placeholder="Número de cédula" style="padding: 1rem">
+                        <div *ngIf="signupForm.get('cedula')?.errors && signupForm.get('cedula')?.dirty" class="text-red-600 text-sm mt-1">La cédula es requerida.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="correo" class="block text-900 font-medium text-xl mb-2">Correo Electrónico</label>
+                        <input id="correo" type="email" formControlName="correo" pInputText class="w-full md:w-30rem mb-2" placeholder="Correo electrónico" style="padding: 1rem">
+                        <div *ngIf="signupForm.get('correo')?.errors && signupForm.get('correo')?.dirty" class="text-red-600 text-sm mt-1">El correo electrónico es requerido y debe ser válido.</div>
+                    </div>
+               
+
+                    <div class="mb-3">
+                        <label for="contrasena" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
+                        <input id="contrasena" type="password" formControlName="contrasena" pPasswordToggle="true" pInputText class="w-full md:w-30rem mb-2" placeholder="Contraseña" style="padding: 1rem">
+                        <div *ngIf="signupForm.get('contrasena')?.errors && signupForm.get('contrasena')?.dirty" class="text-red-600 text-sm mt-1">La contraseña es requerida y debe tener al menos 6 caracteres.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="porcentajeComision" class="block text-900 font-medium text-xl mb-2">Porcentaje de Comisión</label>
+                        <p-inputNumber  class="w-full md:w-30rem mb-2" formControlName="porcentajeComision" inputId="locale-german" mode="decimal" [minFractionDigits]="2" placeholder="Porcentaje de comisión" ></p-inputNumber>
+                        <div *ngIf="signupForm.get('porcentajeComision')?.errors && signupForm.get('porcentajeComision')?.dirty" class="text-red-600 text-sm mt-1">El porcentaje de comisión es requerido.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fechaIngreso" class="block text-900 font-medium text-xl mb-2">Fecha de Ingreso</label>
+                        <p-calendar [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" formControlName="fechaIngreso"  placeholder="Fecha de ingreso" ></p-calendar>
+                        <div *ngIf="signupForm.get('fechaIngreso')?.errors && signupForm.get('fechaIngreso')?.dirty" class="text-red-600 text-sm mt-1">La fecha de ingreso es requerida.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tandaLabor" class="block text-900 font-medium text-xl mb-2">Tanda Laboral</label>
+                        <p-dropdown formControlName="tandaLabor" [options]="tandasLabor" optionLabel="label" optionValue="value" placeholder="Seleccione una tanda laboral"></p-dropdown>
+                        <div *ngIf="signupForm.get('tandaLabor')?.errors && signupForm.get('tandaLabor')?.dirty" class="text-red-600 text-sm mt-1 py-8">La tanda laboral es requerida.</div>
+                    </div>
+
+                    <div class="text-center">
+                        <button pButton type="submit" label="Registrar" class="w-full p-3 text-xl"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card flex justify-content-center gap-2">
+    <p-toast  preventOpenDuplicates="true"/>
+
+  
+</div>

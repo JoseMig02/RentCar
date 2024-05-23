@@ -1,0 +1,82 @@
+<p-toast  preventOpenDuplicates="true"/>
+<div class="grid">
+    <div class="col-12">
+      <div class="card px-6 py-6">
+     
+        <p-toolbar styleClass="mb-4">
+          <ng-template pTemplate="left">
+            <div class="my-2">
+              <button pButton pRipple label="Nuevo Tipo de Combustible" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            </div>
+          </ng-template>
+        </p-toolbar>
+  
+        <p-table #dt [value]="tiposCombustible" [paginator]="true" [rows]="12" [rowsPerPageOptions]="[10, 20, 30]" responsiveLayout="scroll" [(selection)]="selectedTiposCombustible" selectionMode="multiple" [dataKey]="'id'">
+          <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+              <h5 class="m-0">Gestión de Tipos de Combustible</h5>
+              <span class="block mt-2 md:mt-0 p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" placeholder="Buscar..." class="w-full sm:w-auto"/>
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+              <th pSortableColumn="descripcion">Descripción <p-sortIcon field="descripcion"></p-sortIcon></th>
+              <th pSortableColumn="esElectrico">Eléctrico <p-sortIcon field="esElectrico"></p-sortIcon></th>
+              <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+              <th>Acciones</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-tipoCombustible>
+            <tr>
+              <td>{{ tipoCombustible.nombre }}</td>
+              <td>{{ tipoCombustible.descripcion }}</td>
+              <td><p-tag [value]="tipoCombustible.esElectrico ? 'Sí' : 'No'" [severity]="tipoCombustible.esElectrico ? 'success' : 'warning'"></p-tag></td>
+              <td><p-tag [value]="tipoCombustible.estado" [severity]="tipoCombustible.estado === 'activo' ? 'success' : 'danger'"></p-tag></td>
+              <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editTipoCombustible(tipoCombustible)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteTipoCombustible(tipoCombustible.id)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+  
+      <p-dialog [formGroup]="tipoCombustibleForm" [(visible)]="displayDialog" [style]="{width: '450px'}" header="Detalles del Tipo de Combustible" [modal]="true" [closable]="false" [dismissableMask]="true" class="p-fluid">
+       
+          <ng-template pTemplate="content">
+            <div class="field">
+              <label for="nombre">Nombre</label>
+              <input type="text" formControlName="nombre" pInputText id="nombre" required autofocus />
+              <div *ngIf="tipoCombustibleForm.get('nombre')?.invalid && tipoCombustibleForm.get('nombre')?.touched" class="text-red-600 text-sm mt-1">Nombre es requerido</div>
+            </div>
+            <div class="field">
+                <label for="esElectrico">Eléctrico</label>
+                <p-dropdown [options]="[{label: 'Sí', value: true}, {label: 'No', value: false}]" formControlName="esElectrico" placeholder="Seleccionar"></p-dropdown>
+                <div *ngIf="tipoCombustibleForm.get('esElectrico')?.invalid && tipoCombustibleForm.get('esElectrico')?.touched" class="text-red-600 text-sm mt-1">Es Eléctrico es requerido</div>
+              </div>
+              <div class="field">
+                <label for="estado">Estado</label>
+                <p-dropdown [options]="estados" formControlName="estado" optionLabel="label" optionValue="value" placeholder="Seleccionar Estado"></p-dropdown>
+                <div *ngIf="tipoCombustibleForm.get('estado')?.invalid && tipoCombustibleForm.get('estado')?.touched" class="text-red-600 text-sm mt-1">Estado es requerido</div>
+              </div>
+            <div class="field">
+              <label for="descripcion">Descripción</label>
+              <textarea id="descripcion" formControlName="descripcion" pInputTextarea required rows="3" cols="20"></textarea>
+              <div *ngIf="tipoCombustibleForm.get('descripcion')?.invalid && tipoCombustibleForm.get('descripcion')?.touched" class="text-red-600 text-sm mt-1">Descripción es requerida</div>
+            </div>
+         
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveTipoCombustible()"></button>
+          </ng-template>
+      </p-dialog>
+    </div>
+  </div>
+
+  <p-confirmDialog></p-confirmDialog>
+  

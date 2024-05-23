@@ -1,0 +1,77 @@
+<p-toast  preventOpenDuplicates="true"/>
+<div class="grid">
+    <div class="col-12">
+      <div class="card px-6 py-6">
+      
+        <p-toolbar styleClass="mb-4">
+          <ng-template pTemplate="left">
+            <div class="my-2">
+              <button pButton pRipple label="Nuevo Tipo de Vehículo" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            </div>
+          </ng-template>
+        </p-toolbar>
+  
+        <p-table #dt [value]="tipoVehiculos" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,30]" responsiveLayout="scroll" [(selection)]="selectedTipoVehiculos" selectionMode="multiple" [dataKey]="'id'">
+          <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+              <h5 class="m-0">Gestión de Tipos de Vehículo</h5>
+              <span class="block mt-2 md:mt-0 p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" placeholder="Buscar..." class="w-full sm:w-auto"/>
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+              <th pSortableColumn="descripcion">Descripción <p-sortIcon field="descripcion"></p-sortIcon></th>
+              <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+              <th>Acciones</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-tipoVehiculo>
+            <tr>
+              <td>{{ tipoVehiculo.nombre }}</td>
+              <td>{{ tipoVehiculo.descripcion }}</td>
+              <td><p-tag [value]="tipoVehiculo.estado" [severity]="tipoVehiculo.estado === 'activo' ? 'success' : 'danger'"></p-tag></td>
+              <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editTipoVehiculo(tipoVehiculo)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteTipoVehiculo(tipoVehiculo.id)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+  
+      <p-dialog  [formGroup]="tipoVehiculoForm" [(visible)]="displayDialog" [style]="{width: '450px'}" header="Detalles del Tipo de Vehículo" [modal]="true" [closable]="false" [dismissableMask]="true" class="p-fluid">
+        
+      
+            <div class="field">
+                <label for="nombre">Nombre</label>
+                <input type="text" formControlName="nombre" pInputText id="nombre" required autofocus />
+                <div *ngIf="tipoVehiculoForm.get('nombre')?.invalid && tipoVehiculoForm.get('nombre')?.touched" class="text-red-600 text-sm mt-1">Nombre es requerido</div>
+            </div>
+            <div class="field">
+              <label for="estado">Estado</label>
+              <p-dropdown [options]="estados" formControlName="estado" optionLabel="label" optionValue="value" placeholder="Seleccionar Estado"></p-dropdown>
+              <div *ngIf="tipoVehiculoForm.get('estado')?.invalid && tipoVehiculoForm.get('estado')?.touched" class="text-red-600 text-sm mt-1">Estado es requerido</div>
+            </div>
+            <div class="field">
+              <label for="descripcion">Descripción</label>
+              <textarea id="descripcion" formControlName="descripcion" pInputTextarea required rows="3" cols="20"></textarea>
+              <div *ngIf="tipoVehiculoForm.get('descripcion')?.invalid && tipoVehiculoForm.get('descripcion')?.touched" class="text-red-600 text-sm mt-1">Descripción es requerida</div>
+            </div>
+         
+          <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveTipoVehiculo()"></button>
+          </ng-template>
+        
+      </p-dialog>
+    </div>
+  </div>
+  
+
+ 
+  <p-confirmDialog></p-confirmDialog>
+  

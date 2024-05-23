@@ -1,0 +1,141 @@
+
+<p-toolbar styleClass="mb-4">
+  <ng-template pTemplate="left">
+    <div class="my-2">
+      <button pButton pRipple label="Nuevo Modelo" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+    </div>
+  </ng-template>
+</p-toolbar>
+
+<p-table [value]="Vehiculos" [paginator]="true" [rows]="10" selectionMode="single" >
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>No. Chasis</th>
+      <th>No. Motor</th>
+      <th>No. Placa</th>
+      <th>Estado</th>
+      <th>Color</th>
+      <th>Año</th>
+      <th>Kilometraje</th>
+      <th>Imagen</th>
+      <th>Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-vehiculo>
+    <tr>
+      <td>{{ vehiculo.nombre }}</td>
+      <td>{{ vehiculo.descripcion }}</td>
+      <td>{{ vehiculo.noChasis }}</td>
+      <td>{{ vehiculo.noMotor }}</td>
+      <td>{{ vehiculo.noPlaca }}</td>
+      <td>{{ vehiculo.estado }}</td>
+      <td>{{ vehiculo.color }}</td>
+      <td>{{ vehiculo.anoFabricacion }}</td>
+      <td>{{ vehiculo.kilometraje }}</td>
+      <td>
+        <ng-container *ngIf="vehiculo.imagenes">
+          <img [src]="vehiculo.imagenes" alt="Imagen del Vehículo" width="50" height="50">
+        </ng-container>
+        <span *ngIf="!vehiculo.imagenes">No disponible</span>
+      </td>
+      <td>
+        <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success" (click)="editVehiculo(vehiculo)"></button>
+        <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteVehiculo(vehiculo.id)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog header="Detalle del Vehículo" [(visible)]="displayDialog" [modal]="true" [style]="{width: '50vw'}" (onHide)="hideDialog()">
+  <form [formGroup]="VehiculoForm" >
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" type="text" pInputText formControlName="nombre" />
+        <div class="text-red-600 text-sm mt-1" *ngIf="VehiculoForm.get('nombre')?.invalid && VehiculoForm.get('nombre')?.touched">Nombre es requerido</div>
+      </div>
+      <div class="field">
+        <label for="idMarca">Marcas</label>
+        <p-dropdown [options]="marcas" formControlName="idMarca" optionLabel="nombre" optionValue="id" placeholder="Seleccionar Marca"></p-dropdown>
+        <div *ngIf="VehiculoForm.get('idMarca')?.invalid && VehiculoForm.get('idMarca')?.touched" class="text-red-600 text-sm mt-1">Marca es requerida</div>
+      </div>
+      <div class="field">
+        <label for="idMarca">modelos</label>
+        <p-dropdown [options]="modelos" formControlName="idModelo" optionLabel="nombre" optionValue="id" placeholder="Seleccionar modelo"></p-dropdown>
+        <div *ngIf="VehiculoForm.get('idModelo')?.invalid && VehiculoForm.get('idModelo')?.touched" class="text-red-600 text-sm mt-1">Modelo es requerida</div>
+      </div>
+      <div class="field">
+        <label for="idMarca">Tipo de combustible</label>
+        <p-dropdown [options]="tipoCombustible" formControlName="idTipoCombustible" optionLabel="nombre" optionValue="id" placeholder="Seleccionar tipo combustible"></p-dropdown>
+        <div *ngIf="VehiculoForm.get('idTipoCombustible')?.invalid && VehiculoForm.get('idTipoCombustible')?.touched" class="text-red-600 text-sm mt-1">Tipo combustible es requerida</div>
+      </div>
+      <div class="field">
+        <label for="idMarca">Tipo de vehiculo</label>
+        <p-dropdown [options]="tipoVehiculos" formControlName="idTipoVehiculo" optionLabel="nombre" optionValue="id" placeholder="Seleccionar el tipo de vehiculo"></p-dropdown>
+        <div *ngIf="VehiculoForm.get('idTipoVehiculo')?.invalid && VehiculoForm.get('idTipoVehiculo')?.touched" class="text-red-600 text-sm mt-1">Tipo de vehiculo es requerido</div>
+      </div>
+      <div class="p-field">
+        <label for="descripcion">Descripción</label>
+        <input id="descripcion" type="text" pInputText formControlName="descripcion" />
+        <div class="text-red-600 text-sm mt-1" *ngIf="VehiculoForm.get('descripcion')?.invalid && VehiculoForm.get('descripcion')?.touched">Descripción es requerida</div>
+      </div>
+      <div class="p-field">
+        <label for="noChasis">No. Chasis</label>
+        <input id="noChasis" type="text" pInputText formControlName="noChasis" />
+        <div class="text-red-600 text-sm mt-1" *ngIf="VehiculoForm.get('noChasis')?.invalid && VehiculoForm.get('noChasis')?.touched">No. Chasis es requerido</div>
+      </div>
+      <div class="p-field">
+        <label for="noMotor">No. Motor</label>
+        <input id="noMotor" type="text" pInputText formControlName="noMotor" />
+        <div class="text-red-600 text-sm mt-1" *ngIf="VehiculoForm.get('noMotor')?.invalid && VehiculoForm.get('noMotor')?.touched">No. Motor es requerido</div>
+      </div>
+      <div class="p-field">
+        <label for="noPlaca">No. Placa</label>
+        <input id="noPlaca" type="text" pInputText formControlName="noPlaca" />
+        <div class="text-red-600 text-sm mt-1" *ngIf="VehiculoForm.get('noPlaca')?.invalid && VehiculoForm.get('noPlaca')?.touched">No. Placa es requerido</div>
+      </div>
+      <div class="field">
+        <label for="estado">Estado</label>
+        <p-dropdown [options]="estados" formControlName="estado" optionLabel="label" optionValue="value" placeholder="Seleccionar Estado"></p-dropdown>
+        <div *ngIf="VehiculoForm.get('estado')?.invalid && VehiculoForm.get('estado')?.touched" class="text-red-600 text-sm mt-1">Estado es requerido</div>
+      </div>
+      <div class="p-field">
+        <label for="color">Color</label>
+        <input id="color" type="text" pInputText formControlName="color" />
+      </div>
+      <div class="p-field">
+        <label for="anoFabricacion">Año de Fabricación</label>
+        <input id="anoFabricacion" type="number" pInputText formControlName="anoFabricacion" />
+        <div class="text-red-600 text-sm mt-1" *ngIf="VehiculoForm.get('anoFabricacion')?.invalid && VehiculoForm.get('anoFabricacion')?.touched">Año de Fabricación es requerido y debe ser un valor válido</div>
+      </div>
+      <div class="p-field">
+        <label for="kilometraje">Kilometraje</label>
+        <input id="kilometraje" type="number" pInputText formControlName="kilometraje" />
+        <div class="text-red-600 text-sm mt-1" *ngIf="VehiculoForm.get('kilometraje')?.invalid && VehiculoForm.get('kilometraje')?.touched">Kilometraje es requerido y debe ser un valor válido</div>
+      </div>
+     
+        <label for="imagenes">Imágenes</label> 
+        
+         
+        
+        <p-fileUpload #fileUpload mode="basic" chooseLabel="Elegir Imagen" chooseIcon="pi pi-upload"
+        name="image" (onSelect)="onImageSelect($event)" accept="image/*" maxFileSize="1000000">
+      </p-fileUpload>
+      
+      
+       
+          
+    </div>
+    <div class="p-dialog-footer">
+      <button pButton type="button" label="Cancelar" class="p-button-secondary" (click)="hideDialog()"></button>
+      <button pButton type="submit" label="Guardar" class="p-button-primary" (click)="saveVehiculo()"></button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-confirmDialog />
+
+<p-toast preventOpenDuplicates="true"></p-toast>
+

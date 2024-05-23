@@ -1,0 +1,104 @@
+<p-toast  preventOpenDuplicates="true"/>
+<div class="grid">
+    <div class="col-12">
+      <div class="card px-6 py-6">
+        
+        <p-toolbar styleClass="mb-4">
+          <ng-template pTemplate="left">
+            <div class="my-2">
+              <button pButton pRipple label="Nuevo Modelo" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            </div>
+          </ng-template>
+        </p-toolbar>
+  
+        <p-table #dt [value]="modelos" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,30]" responsiveLayout="scroll" [(selection)]="selectedModelos" selectionMode="multiple" [dataKey]="'id'">
+          <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+              <h5 class="m-0">Gestión de Modelos</h5>
+              <span class="block mt-2 md:mt-0 p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" placeholder="Buscar..." class="w-full sm:w-auto"/>
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+              <th>Imagen</th>
+
+              <th pSortableColumn="descripcion">Descripción <p-sortIcon field="descripcion"></p-sortIcon></th>
+              <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+              <th pSortableColumn="ano">Año <p-sortIcon field="ano"></p-sortIcon></th>
+              <th pSortableColumn="idMarca">Marca <p-sortIcon field="idMarca"></p-sortIcon></th>
+              <th>Acciones</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-modelo>
+            <tr>
+              <td>{{ modelo.nombre }}</td>
+              <td>
+                <img [src]="modelo.imagen" alt="Imagen de la Marca" width="50" height="50" *ngIf="modelo.imagen" />
+                <span *ngIf="!modelo.imagen">No disponible</span>
+            </td>
+              <td>{{ modelo.descripcion }}</td>
+              <td>{{ modelo.estado }}</td>
+              <td>{{ modelo.ano }}</td>
+              <td>{{ getMarcaNombreById(modelo.idMarca) }}</td>
+              
+           
+              <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editModelo(modelo)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteModelo(modelo.id)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+  
+      <p-dialog [formGroup]="modeloForm" [(visible)]="displayDialog" [style]="{width: '450px'}" header="Detalles del Modelo" [modal]="true" [closable]="false" [dismissableMask]="true" class="p-fluid">
+        <img [src]="modeloForm.get('imagen')?.value" alt="Imagen de la Marca" *ngIf="modeloForm.get('imagen')?.value" width="100" height="100" class="text-center" style="margin: 0 auto;" />
+        <div class="field">
+          <label for="nombre">Nombre</label>
+          <input type="text" formControlName="nombre" pInputText id="nombre" required autofocus />
+          <div *ngIf="modeloForm.get('nombre')?.invalid && modeloForm.get('nombre')?.touched" class="text-red-600 text-sm mt-1">Nombre es requerido</div>
+        </div>
+        <div class="field">
+          <label for="estado">Estado</label>
+          <p-dropdown [options]="estados" formControlName="estado" optionLabel="label" optionValue="value" placeholder="Seleccionar Estado"></p-dropdown>
+          <div *ngIf="modeloForm.get('estado')?.invalid && modeloForm.get('estado')?.touched" class="text-red-600 text-sm mt-1">Estado es requerido</div>
+        </div>
+        <div class="p-field">
+          <label for="ano">Año</label>
+          <p-inputNumber id="ano" formControlName="ano" [useGrouping]="false" [min]="1900" [max]="2099" [class]="{'p-invalid': modeloForm.get('ano')?.invalid && modeloForm.get('ano')?.touched}"></p-inputNumber>
+          <small *ngIf="modeloForm.get('ano')?.invalid && modeloForm.get('ano')?.touched" class="p-error">Año es requerido y debe ser válido (formato: YYYY)</small>
+        </div>
+        
+        <div class="field">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" formControlName="descripcion" pInputTextarea required rows="3" cols="20"></textarea>
+          <div *ngIf="modeloForm.get('descripcion')?.invalid && modeloForm.get('descripcion')?.touched" class="text-red-600 text-sm mt-1">Descripción es requerida</div>
+        </div>
+        <div class="field">
+          <label for="idMarca">Marca</label>
+          <p-dropdown [options]="marcas" formControlName="idMarca" optionLabel="nombre" optionValue="id" placeholder="Seleccionar Marca"></p-dropdown>
+          <div *ngIf="modeloForm.get('idMarca')?.invalid && modeloForm.get('idMarca')?.touched" class="text-red-600 text-sm mt-1">Marca es requerida</div>
+        </div>
+     
+        <p-fileUpload #fileUpload mode="basic" chooseLabel="Elegir Imagen" chooseIcon="pi pi-upload"
+                name="image" (onSelect)="onImageSelect($event)" accept="image/*" maxFileSize="1000000">
+              </p-fileUpload>
+              
+          
+
+  
+        <ng-template pTemplate="footer">
+          <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+          <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveModelo()"></button>
+        </ng-template>
+      </p-dialog>
+    </div>
+  </div>
+  
+
+  <p-confirmDialog></p-confirmDialog>
+  
