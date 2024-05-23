@@ -6,6 +6,7 @@ import { MarcaListComponent } from '../components/marca-list/marca-list.componen
 import { TipoVehiculoComponent } from '../components/tipovehiculo/tipovehiculo.component';
 import { TipoCombustibleComponent } from '../components/tipo-combustible/tipo-combustible.component';
 import { ModeloComponent } from '../components/modelo/modelo.component';
+import { EmpleadoComponent } from '../components/empleado/empleado.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'tiposVehiculos', component:TipoVehiculoComponent},
   { path: 'tiposCombustible', component:TipoCombustibleComponent},
   { path: 'modelos', component:ModeloComponent},
+  { path: 'empleados', component:EmpleadoComponent},
 
 
 

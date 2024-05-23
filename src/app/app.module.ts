@@ -32,18 +32,20 @@ import {isPlatformBrowser } from '@angular/common';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { environment } from './enviroment/environment';
 import { ToastModule } from 'primeng/toast';
+import { EmpleadoComponent } from './features/empleado/components/empleado/empleado.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NofoundComponent,
-   
-    
-  
-  
-   
-   
-  ],  
+
+
+
+
+
+
+
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -58,9 +60,9 @@ import { ToastModule } from 'primeng/toast';
     AppLayoutModule,
     EmpleadoModule,
   ToastModule
- 
-   
-  
+
+
+
   ],
   providers: [
     {
@@ -70,7 +72,7 @@ import { ToastModule } from 'primeng/toast';
     }
   ],
   bootstrap: [AppComponent],
- 
+
 })
 
 

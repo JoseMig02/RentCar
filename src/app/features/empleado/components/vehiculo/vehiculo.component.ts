@@ -93,7 +93,7 @@ export class VehiculoComponent implements OnInit {
   loadVehiculos(): void {
     this.vehiculoService.getAll().subscribe((data: Vehiculo[]) => {
       this.Vehiculos = data;
-      
+
     });
   }
 
@@ -128,7 +128,7 @@ export class VehiculoComponent implements OnInit {
     this.isNew = true;
     this.VehiculoForm.patchValue({ estado: 'activo' });
     this.displayDialog = true;
-  
+
   }
 
   editVehiculo(vehiculo: Vehiculo): void {
@@ -162,9 +162,9 @@ export class VehiculoComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Completar Campos', life: 2000 });
       return;
     }
-  
+
     const vehiculo = this.VehiculoForm.value as Vehiculo;
-  
+
     if (this.isNew) {
       this.vehiculoService.create(vehiculo).subscribe(createdVehiculo => {
         console.log('sin imagen creado');
@@ -206,7 +206,7 @@ export class VehiculoComponent implements OnInit {
       }
     }
   }
-  
+
 
   hideDialog(): void {
     this.displayDialog = false;

@@ -27,9 +27,10 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Tipos de vehiculos', icon: 'pi pi-fw pi-check-square', routerLink: ['/empleado/tiposVehiculos'] },
                     { label: 'Tipos de combustibles', icon: 'pi pi-fw pi-bookmark', routerLink: ['/empleado/tiposCombustible'] },
                     { label: 'Modelos', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/empleado/modelos'] },
-                    { label: 'SignIn', icon: 'pi pi-fw pi-box', routerLink: ['/empleado/signIn'] },
                     { label: 'vehiculos', icon: 'pi pi-fw pi-table', routerLink: ['empleado/vehiculos'] },
-                    { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
+                    { label: 'Empleados', icon: 'pi pi-fw pi-list', routerLink: ['/empleado/empleados'] },
+                    { label: 'SignIn', icon: 'pi pi-fw pi-box', routerLink: ['/empleado/signIn'] },
+
                     { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree'] },
                     { label: 'Panel', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/panel'] },
                     { label: 'Overlay', icon: 'pi pi-fw pi-clone', routerLink: ['/uikit/overlay'] },

@@ -31,18 +31,20 @@ import { TipoVehiculoComponent } from '../components/tipovehiculo/tipovehiculo.c
 import { TipoCombustibleComponent } from '../components/tipo-combustible/tipo-combustible.component';
 import { ModeloComponent } from '../components/modelo/modelo.component';
 import { VehiculoComponent } from '../components/vehiculo/vehiculo.component';
+import { EmpleadoComponent } from '../components/empleado/empleado.component';
 
 
 @NgModule({
-  declarations: [ 
+  declarations: [
     SignupComponent,
     SigninComponent,
     MarcaListComponent,
     TipoVehiculoComponent,
     TipoCombustibleComponent,
     ModeloComponent,
-    VehiculoComponent
-    
+    VehiculoComponent,
+    EmpleadoComponent
+
 
   ],
   imports: [
@@ -69,11 +71,11 @@ import { VehiculoComponent } from '../components/vehiculo/vehiculo.component';
     FileUploadModule,
     InputTextareaModule,
     TagModule,
- 
-    
-    
+
+
+
 ],
-exports: [MarcaListComponent,ToastModule], 
+exports: [MarcaListComponent,ToastModule],
   providers: [MessageService,ConfirmationService]
 })
 export class EmpleadoModule { }
