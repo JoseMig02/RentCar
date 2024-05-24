@@ -5,6 +5,10 @@ import { Inspeccion } from '../../../../models/Inspeccion';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { VehiculoService } from '../../../../services/vehiculos.service';
 import { Vehiculo } from '../../../../models/Vehiculo';
+import { Cliente } from '../../../../models/Cliente';
+import { ClienteService } from '../../../../services/cliente.service';
+import { EmpleadoService } from '../../../../services/empleado.service';
+import { json } from 'express';
 
 interface Estado {
   label: string;
@@ -20,7 +24,7 @@ export class InspeccionComponent implements OnInit {
   inspeccionForm: FormGroup;
   inspecciones: Inspeccion[] = [];
   vehiculos: Vehiculo[] =[];
-  clientes:any[]=[]
+  clientes: Cliente[]=[];
   displayDialog: boolean = false;
   isNew: boolean = false;
   selectedInspeccion:any
@@ -30,17 +34,19 @@ export class InspeccionComponent implements OnInit {
     private fb: FormBuilder,
     private inspeccionService: InspeccionService,
     private vehiculoService: VehiculoService,
+    private clienteService: ClienteService,
+    private empleadoService:EmpleadoService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
     this.inspeccionForm = this.fb.group({
-      tieneRalladuras: [false, Validators.required],
+      tieneRalladuras: [false],
       cantidadCombustible: ['', Validators.required],
-      tieneGomaRespuesta: [false, Validators.required],
-      tieneGato: [false, Validators.required],
-      tieneRoturasCristal: [false, Validators.required],
+      tieneGomaRespuesta: [false],
+      tieneGato: [false],
+      tieneRoturasCristal: [false],
       estadoGomas: ['', Validators.required],
-      lucesFuncionando: [false, Validators.required],
+      lucesFuncionando: [false],
       liquidoFrenos: ['', Validators.required],
       presionNeumaticos: ['', Validators.required],
       nivelAceite: ['', Validators.required],
@@ -48,7 +54,6 @@ export class InspeccionComponent implements OnInit {
       fecha: ['', Validators.required],
       idVehiculo: ['', Validators.required],
       idCliente: ['', Validators.required],
-      idEmpleadoInspeccion: ['', Validators.required],
       estado: ['activo', Validators.required]
     });
   }
@@ -56,6 +61,7 @@ export class InspeccionComponent implements OnInit {
   ngOnInit(): void {
     this.loadInspecciones();
     this.loadVehiculos();
+    this.loadClientes();
     this.estados = [
       { label: 'Activo', value: 'activo' },
       { label: 'Inactivo', value: 'inactivo' },
@@ -75,6 +81,11 @@ export class InspeccionComponent implements OnInit {
     });
   }
 
+  loadClientes():void{
+    this.clienteService.getAll().subscribe((data:Cliente[]) =>{
+      this.clientes =data
+    })
+  }
   openNew(): void {
     this.isNew = true;
     this.inspeccionForm.reset();
@@ -111,7 +122,16 @@ export class InspeccionComponent implements OnInit {
     }
 
     const inspeccion = this.inspeccionForm.value as Inspeccion;
-    console.log(inspeccion)
+    const empleadoId = this.empleadoService.getEmployeeId();
+    if(empleadoId){
+       inspeccion.idEmpleadoInspeccion=  JSON.parse(empleadoId);
+    }
+      // Verificación de campos checkbox
+  inspeccion.tieneRalladuras = inspeccion.tieneRalladuras || false;
+  inspeccion.tieneGomaRespuesta = inspeccion.tieneGomaRespuesta || false;
+  inspeccion.tieneGato = inspeccion.tieneGato || false;
+  inspeccion.tieneRoturasCristal = inspeccion.tieneRoturasCristal || false;
+  inspeccion.lucesFuncionando = inspeccion.lucesFuncionando || false;
 
     if (this.isNew) {
       console.log(inspeccion)

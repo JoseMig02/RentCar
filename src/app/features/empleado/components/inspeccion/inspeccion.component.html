@@ -9,7 +9,16 @@
       <th>Tiene Ralladuras</th>
       <th>Cantidad Combustible</th>
       <th>Tiene Goma Respuesta</th>
+      <th>Tiene Gato</th>
+      <th>Tiene Roturas Cristal</th>
+      <th>Estado Gomas</th>
+      <th>Luces Funcionando</th>
+      <th>Líquido Frenos</th>
+      <th>Presión Neumáticos</th>
+      <th>Nivel Aceite</th>
+      <th>Observaciones</th>
       <th>Fecha</th>
+      <th>Estado</th>
       <th>Acciones</th>
     </tr>
   </ng-template>
@@ -19,9 +28,17 @@
       <td>{{ inspeccion.tieneRalladuras ? 'Sí' : 'No' }}</td>
       <td>{{ inspeccion.cantidadCombustible }}</td>
       <td>{{ inspeccion.tieneGomaRespuesta ? 'Sí' : 'No' }}</td>
+      <td>{{ inspeccion.tieneGato ? 'Sí' : 'No' }}</td>
+      <td>{{ inspeccion.tieneRoturasCristal ? 'Sí' : 'No' }}</td>
+      <td>{{ inspeccion.estadoGomas }}</td>
+      <td>{{ inspeccion.lucesFuncionando ? 'Sí' : 'No' }}</td>
+      <td>{{ inspeccion.liquidoFrenos }}</td>
+      <td>{{ inspeccion.presionNeumaticos }}</td>
+      <td>{{ inspeccion.nivelAceite }}</td>
+      <td>{{ inspeccion.observaciones }}</td>
       <td>{{ inspeccion.fecha | date: 'shortDate' }}</td>
+      <td>{{ inspeccion.estado }}</td>
       <td>
-
         <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success" style="margin-right: 6px;" (click)="editInspeccion(inspeccion)"></button>
         <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteInspeccion(inspeccion.id)"></button>
       </td>
@@ -33,11 +50,13 @@
   <form [formGroup]="inspeccionForm" (ngSubmit)="saveInspeccion()">
     <div class="p-fluid">
       <div class="p-field-checkbox">
-        <p-checkbox id="tieneRalladuras" formControlName="tieneRalladuras" binary="true"></p-checkbox>
+        <p-checkbox  [binary]="true" 
+        [trueValue]="true" 
+        [falseValue]="false" id="tieneRalladuras" formControlName="tieneRalladuras" ></p-checkbox>
         <label for="tieneRalladuras">Tiene Ralladuras</label>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'p-invalid': inspeccionForm.controls['cantidadCombustible'].invalid && inspeccionForm.controls['cantidadCombustible'].touched}">
         <label for="cantidadCombustible">Cantidad de Combustible</label>
         <p-dropdown id="cantidadCombustible" formControlName="cantidadCombustible" [options]="[
           { label: '1/4', value: '1/4' },
@@ -45,63 +64,94 @@
           { label: '3/4', value: '3/4' },
           { label: 'Lleno', value: 'lleno' }
         ]"></p-dropdown>
+        <div *ngIf="inspeccionForm.controls['cantidadCombustible'].invalid && inspeccionForm.controls['cantidadCombustible'].touched" class="text-red-600 text-sm mt-1">
+          Cantidad de Combustible es requerido.
+        </div>
       </div>
 
       <div class="p-field-checkbox">
-        <p-checkbox id="tieneGomaRespuesta" formControlName="tieneGomaRespuesta" binary="true"></p-checkbox>
+        <p-checkbox  [binary]="true" 
+        [trueValue]="true" 
+        [falseValue]="false" id="tieneGomaRespuesta" formControlName="tieneGomaRespuesta" ></p-checkbox>
         <label for="tieneGomaRespuesta">Tiene Goma Respuesta</label>
       </div>
 
       <div class="p-field-checkbox">
-        <p-checkbox id="tieneGato" formControlName="tieneGato" binary="true"></p-checkbox>
+        <p-checkbox  [binary]="true" 
+        [trueValue]="true" 
+        [falseValue]="false" id="tieneGato" formControlName="tieneGato" ></p-checkbox>
         <label for="tieneGato">Tiene Gato</label>
       </div>
 
       <div class="p-field-checkbox">
-        <p-checkbox id="tieneRoturasCristal" formControlName="tieneRoturasCristal" binary="true"></p-checkbox>
+        <p-checkbox  [binary]="true"  
+        [trueValue]="true" 
+        [falseValue]="false" id="tieneRoturasCristal" formControlName="tieneRoturasCristal" ></p-checkbox>
         <label for="tieneRoturasCristal">Tiene Roturas de Cristal</label>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'p-invalid': inspeccionForm.controls['estadoGomas'].invalid && inspeccionForm.controls['estadoGomas'].touched}">
         <label for="estadoGomas">Estado de las Gomas</label>
         <input id="estadoGomas" type="text" pInputText formControlName="estadoGomas"/>
+        <div *ngIf="inspeccionForm.controls['estadoGomas'].invalid && inspeccionForm.controls['estadoGomas'].touched" class="text-red-600 text-sm mt-1">
+          Estado de las Gomas es requerido.
+        </div>
       </div>
 
       <div class="p-field-checkbox">
-        <p-checkbox id="lucesFuncionando" formControlName="lucesFuncionando" binary="true"></p-checkbox>
+        <p-checkbox 
+          id="lucesFuncionando" 
+          formControlName="lucesFuncionando" 
+          [binary]="true" 
+          [trueValue]="true" 
+          [falseValue]="false"
+        ></p-checkbox>
         <label for="lucesFuncionando">Luces Funcionando</label>
       </div>
-
-      <div class="p-field">
+      
+      
+      <div class="p-field" [ngClass]="{'p-invalid': inspeccionForm.controls['liquidoFrenos'].invalid && inspeccionForm.controls['liquidoFrenos'].touched}">
         <label for="liquidoFrenos">Líquido de Frenos</label>
         <p-dropdown id="liquidoFrenos" formControlName="liquidoFrenos" [options]="[
           { label: 'Bajo', value: 'bajo' },
           { label: 'Medio', value: 'medio' },
           { label: 'Alto', value: 'alto' }
         ]"></p-dropdown>
+        <div *ngIf="inspeccionForm.controls['liquidoFrenos'].invalid && inspeccionForm.controls['liquidoFrenos'].touched" class="text-red-600 text-sm mt-1">
+          Líquido de Frenos es requerido.
+        </div>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'p-invalid': inspeccionForm.controls['presionNeumaticos'].invalid && inspeccionForm.controls['presionNeumaticos'].touched}">
         <label for="presionNeumaticos">Presión de Neumáticos</label>
         <p-dropdown id="presionNeumaticos" formControlName="presionNeumaticos" [options]="[
           { label: 'Baja', value: 'baja' },
           { label: 'Normal', value: 'normal' },
           { label: 'Alta', value: 'alta' }
         ]"></p-dropdown>
+        <div *ngIf="inspeccionForm.controls['presionNeumaticos'].invalid && inspeccionForm.controls['presionNeumaticos'].touched" class="text-red-600 text-sm mt-1">
+          Presión de Neumáticos es requerido.
+        </div>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'p-invalid': inspeccionForm.controls['nivelAceite'].invalid && inspeccionForm.controls['nivelAceite'].touched}">
         <label for="nivelAceite">Nivel de Aceite</label>
         <p-dropdown id="nivelAceite" formControlName="nivelAceite" [options]="[
           { label: 'Bajo', value: 'bajo' },
           { label: 'Medio', value: 'medio' },
           { label: 'Alto', value: 'alto' }
         ]"></p-dropdown>
+        <div *ngIf="inspeccionForm.controls['nivelAceite'].invalid && inspeccionForm.controls['nivelAceite'].touched" class="text-red-600 text-sm mt-1">
+          Nivel de Aceite es requerido.
+        </div>
       </div>
-      <div class="field">
+
+      <div class="field" [ngClass]="{'p-invalid': inspeccionForm.controls['estado'].invalid && inspeccionForm.controls['estado'].touched}">
         <label for="estado">Estado</label>
         <p-dropdown [options]="estados" formControlName="estado" optionLabel="label" optionValue="value" placeholder="Seleccionar Estado"></p-dropdown>
-
+        <div *ngIf="inspeccionForm.controls['estado'].invalid && inspeccionForm.controls['estado'].touched" class="text-red-600 text-sm mt-1">
+          Estado es requerido.
+        </div>
       </div>
 
       <div class="p-field">
@@ -109,33 +159,40 @@
         <textarea id="observaciones" formControlName="observaciones" pInputTextarea rows="3"></textarea>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'p-invalid': inspeccionForm.controls['fecha'].invalid && inspeccionForm.controls['fecha'].touched}">
         <label for="fecha">Fecha</label>
         <p-calendar id="fecha" formControlName="fecha" dateFormat="yy-mm-dd"></p-calendar>
+        <div *ngIf="inspeccionForm.controls['fecha'].invalid && inspeccionForm.controls['fecha'].touched" class="text-red-600 text-sm mt-1">
+          Fecha es requerido.
+        </div>
       </div>
 
-
-      <div class="field">
-        <label for="estado">Vehículo</label>
-        <p-dropdown [options]="vehiculos" formControlName="idVehiculo" optionLabel="nombre" optionValue="id" placeholder="Seleccionar vehiculo"></p-dropdown>
-
+      <div class="field" [ngClass]="{'p-invalid': inspeccionForm.controls['idVehiculo'].invalid && inspeccionForm.controls['idVehiculo'].touched}">
+        <label for="idVehiculo">Vehículo</label>
+        <p-dropdown [options]="vehiculos" formControlName="idVehiculo" optionLabel="nombre" optionValue="id" placeholder="Seleccionar vehículo"></p-dropdown>
+        <div *ngIf="inspeccionForm.controls['idVehiculo'].invalid && inspeccionForm.controls['idVehiculo'].touched" class="text-red-600 text-sm mt-1">
+          Vehículo es requerido.
+        </div>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'p-invalid': inspeccionForm.controls['idCliente'].invalid && inspeccionForm.controls['idCliente'].touched}">
         <label for="idCliente">Cliente</label>
-        <input id="idCliente" type="number" pInputText formControlName="idCliente"/>
+        <p-dropdown [options]="clientes" formControlName="idCliente" optionLabel="nombre" optionValue="id" placeholder="Seleccionar cliente"></p-dropdown>
+        <div *ngIf="inspeccionForm.controls['idCliente'].invalid && inspeccionForm.controls['idCliente'].touched" class="text-red-600 text-sm mt-1">
+          Cliente es requerido.
+        </div>
       </div>
 
-      <div class="p-field">
-        <label for="idEmpleadoInspeccion">Empleado de Inspección</label>
-        <input id="idEmpleadoInspeccion" type="number" pInputText formControlName="idEmpleadoInspeccion"/>
-      </div>
+     
     </div>
 
-    <p-footer style="margin: 10px;">
-      <p-button label="Guardar" icon="pi pi-check"  type="submit" ></p-button>
-      <p-button label="Cancelar" icon="pi pi-times" (click)="hideDialog()"></p-button>
+    <p-footer>
+      <div class="p-d-flex p-jc-end mt-4 ">
+        <p-button label="Guardar" icon="pi pi-check" type="submit" class="mx-4"></p-button>
+        <p-button label="Cancelar" icon="pi pi-times" class="p-mr-2" (click)="hideDialog()"></p-button>
+      </div>
     </p-footer>
+
 
   </form>
 </p-dialog>
