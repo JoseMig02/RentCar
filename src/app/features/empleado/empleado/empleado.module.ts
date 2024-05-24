@@ -34,6 +34,7 @@ import { VehiculoComponent } from '../components/vehiculo/vehiculo.component';
 import { EmpleadoComponent } from '../components/empleado/empleado.component';
 import { InspeccionComponent } from '../components/inspeccion/inspeccion.component';
 import { PanelModule } from 'primeng/panel';
+import { ClienteComponent } from '../components/cliente/cliente.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { PanelModule } from 'primeng/panel';
     ModeloComponent,
     VehiculoComponent,
     EmpleadoComponent,
-    InspeccionComponent
+    InspeccionComponent,
+    ClienteComponent
 
 
   ],

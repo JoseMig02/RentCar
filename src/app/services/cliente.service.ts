@@ -16,9 +16,9 @@ export class ClienteService {
     return this.http.post<any>(`${this.apiUrl}/signup`, cliente);
   }
 
-  signIn(correo: string, contrasena: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/signin`, { correo, contrasena });
-  }
+//   signIn(correo: string, contrasena: string): Observable<any> {
+//     return this.http.post<any>(`${this.apiUrl}/signin`, { correo, contrasena });
+//   }
 
   getAll(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.apiUrl);

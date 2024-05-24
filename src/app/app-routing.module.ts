@@ -11,6 +11,7 @@ import { SigninComponent } from './features/empleado/components/signin/signin.co
 import { VehiculoComponent } from './features/empleado/components/vehiculo/vehiculo.component';
 import { EmpleadoComponent } from './features/empleado/components/empleado/empleado.component';
 import { InspeccionComponent } from './features/empleado/components/inspeccion/inspeccion.component';
+import { ClienteComponent } from './features/empleado/components/cliente/cliente.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path: 'empleado/vehiculos', component: VehiculoComponent },
       { path: 'empleado/empleados', component: EmpleadoComponent },
       { path: 'empleado/inspecciones', component: InspeccionComponent },
+      { path: 'empleado/cliente', component: ClienteComponent },
       // otras rutas dentro del layout
     ]
   },

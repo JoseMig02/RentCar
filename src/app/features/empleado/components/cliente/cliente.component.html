@@ -1,0 +1,99 @@
+<p-toast preventOpenDuplicates="true"></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <div class="card px-6 py-6">
+    
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <div class="my-2">
+            <button pButton pRipple label="Nuevo Cliente" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+          </div>
+        </ng-template>
+      </p-toolbar>
+
+      <p-table #dt [value]="clientes" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,30]" responsiveLayout="scroll"  selectionMode="multiple" [dataKey]="'id'">
+        <ng-template pTemplate="caption">
+          <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 class="m-0">Gestión de Clientes</h5>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" placeholder="Buscar..." class="w-full sm:w-auto"/>
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+            <th pSortableColumn="cedula">Cédula <p-sortIcon field="cedula"></p-sortIcon></th>
+            <th pSortableColumn="noTarjetaCR">No. Tarjeta CR <p-sortIcon field="noTarjetaCR"></p-sortIcon></th>
+            <th pSortableColumn="limiteCredito">Límite Crédito <p-sortIcon field="limiteCredito"></p-sortIcon></th>
+            <th pSortableColumn="tipoPersona">Tipo Persona <p-sortIcon field="tipoPersona"></p-sortIcon></th>
+            <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+            <th>Acciones</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cliente>
+          <tr>
+            <td>{{ cliente.nombre }}</td>
+            <td>{{ cliente.cedula }}</td>
+            <td>{{ cliente.noTarjetaCR }}</td>
+            <td>{{ cliente.limiteCredito }}</td>
+            <td>{{ cliente.tipoPersona }}</td>
+            <td><p-tag [value]="cliente.estado" [severity]="cliente.estado === 'activo' ? 'success' : 'danger'"></p-tag></td>
+            <td>
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCliente(cliente)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteCliente(cliente.id)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <p-dialog  [formGroup]="clientesForm" [(visible)]="displayDialog" [style]="{width: '450px'}" header="Detalles del Cliente" [modal]="true" [closable]="false" [dismissableMask]="true" class="p-fluid">
+      
+    
+          <div class="field">
+              <label for="nombre">Nombre</label>
+              <input type="text" formControlName="nombre" pInputText id="nombre" required autofocus />
+              <div *ngIf="clientesForm.get('nombre')?.invalid && clientesForm.get('nombre')?.touched" class="text-red-600 text-sm mt-1">Nombre es requerido</div>
+          </div>
+          <div class="field">
+            <label for="cedula">Cédula</label>
+            <input type="text" formControlName="cedula" pInputText id="cedula" required />
+            <div *ngIf="clientesForm.get('cedula')?.invalid && clientesForm.get('cedula')?.touched" class="text-red-600 text-sm mt-1">Cédula es requerida</div>
+          </div>
+          <div class="field">
+            <label for="noTarjetaCR">No. Tarjeta CR</label>
+            <input type="text" formControlName="noTarjetaCR" pInputText id="noTarjetaCR" required />
+            <div *ngIf="clientesForm.get('noTarjetaCR')?.invalid && clientesForm.get('noTarjetaCR')?.touched" class="text-red-600 text-sm mt-1">No. Tarjeta CR es requerido</div>
+          </div>
+          <div class="field">
+            <label for="limiteCredito">Límite Crédito</label>
+            <input type="number" formControlName="limiteCredito" pInputNumber id="limiteCredito" required />
+            <div *ngIf="clientesForm.get('limiteCredito')?.invalid && clientesForm.get('limiteCredito')?.touched" class="text-red-600 text-sm mt-1">Límite Crédito es requerido</div>
+          </div>
+          <div class="field">
+            <label for="tipoPersona">Tipo Persona</label>
+            <input type="text" formControlName="tipoPersona" pInputText id="tipoPersona" required />
+            <div *ngIf="clientesForm.get('tipoPersona')?.invalid && clientesForm.get('tipoPersona')?.touched" class="text-red-600 text-sm mt-1">Tipo Persona es requerido</div>
+          </div>
+          <div class="field">
+            <label for="estado">Estado</label>
+            <p-dropdown [options]="estados" formControlName="estado" optionLabel="label" optionValue="value" placeholder="Seleccionar Estado"></p-dropdown>
+            <div *ngIf="clientesForm.get('estado')?.invalid && clientesForm.get('estado')?.touched" class="text-red-600 text-sm mt-1">Estado es requerido</div>
+          </div>
+        
+       
+        <ng-template pTemplate="footer">
+          <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+         <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveCliente()"></button>
+          </ng-template>
+        
+      </p-dialog>
+    </div>
+  </div>
+  
+
+ 
+  <p-confirmDialog></p-confirmDialog>
+  
