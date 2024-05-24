@@ -33,11 +33,13 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { environment } from './enviroment/environment';
 import { ToastModule } from 'primeng/toast';
 import { EmpleadoComponent } from './features/empleado/components/empleado/empleado.component';
+import { InspeccionComponent } from './features/empleado/components/inspeccion/inspeccion.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NofoundComponent,
+
 
 
 

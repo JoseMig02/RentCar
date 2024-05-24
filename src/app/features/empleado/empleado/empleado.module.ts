@@ -32,6 +32,8 @@ import { TipoCombustibleComponent } from '../components/tipo-combustible/tipo-co
 import { ModeloComponent } from '../components/modelo/modelo.component';
 import { VehiculoComponent } from '../components/vehiculo/vehiculo.component';
 import { EmpleadoComponent } from '../components/empleado/empleado.component';
+import { InspeccionComponent } from '../components/inspeccion/inspeccion.component';
+import { PanelModule } from 'primeng/panel';
 
 
 @NgModule({
@@ -43,7 +45,8 @@ import { EmpleadoComponent } from '../components/empleado/empleado.component';
     TipoCombustibleComponent,
     ModeloComponent,
     VehiculoComponent,
-    EmpleadoComponent
+    EmpleadoComponent,
+    InspeccionComponent
 
 
   ],
@@ -71,6 +74,7 @@ import { EmpleadoComponent } from '../components/empleado/empleado.component';
     FileUploadModule,
     InputTextareaModule,
     TagModule,
+    PanelModule
 
 
 

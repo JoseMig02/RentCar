@@ -10,6 +10,7 @@ import { ModeloComponent } from './features/empleado/components/modelo/modelo.co
 import { SigninComponent } from './features/empleado/components/signin/signin.component';
 import { VehiculoComponent } from './features/empleado/components/vehiculo/vehiculo.component';
 import { EmpleadoComponent } from './features/empleado/components/empleado/empleado.component';
+import { InspeccionComponent } from './features/empleado/components/inspeccion/inspeccion.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
       { path: 'empleado/signIn', component: SigninComponent },
       { path: 'empleado/vehiculos', component: VehiculoComponent },
       { path: 'empleado/empleados', component: EmpleadoComponent },
+      { path: 'empleado/inspecciones', component: InspeccionComponent },
       // otras rutas dentro del layout
     ]
   },

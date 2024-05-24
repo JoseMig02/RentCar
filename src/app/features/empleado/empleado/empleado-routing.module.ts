@@ -7,6 +7,7 @@ import { TipoVehiculoComponent } from '../components/tipovehiculo/tipovehiculo.c
 import { TipoCombustibleComponent } from '../components/tipo-combustible/tipo-combustible.component';
 import { ModeloComponent } from '../components/modelo/modelo.component';
 import { EmpleadoComponent } from '../components/empleado/empleado.component';
+import { InspeccionComponent } from '../components/inspeccion/inspeccion.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'tiposCombustible', component:TipoCombustibleComponent},
   { path: 'modelos', component:ModeloComponent},
   { path: 'empleados', component:EmpleadoComponent},
+  { path: 'inspecciones', component:InspeccionComponent},
 
 
 

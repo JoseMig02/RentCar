@@ -1,0 +1,145 @@
+<p-panel header="Gestión de Inspecciones" styleClass="p-mb-3">
+  <p-button label="Nueva Inspección" icon="pi pi-plus" (click)="openNew()"></p-button>
+</p-panel>
+
+<p-table [value]="inspecciones" selectionMode="single" (onRowSelect)="editInspeccion($event.data)">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>Tiene Ralladuras</th>
+      <th>Cantidad Combustible</th>
+      <th>Tiene Goma Respuesta</th>
+      <th>Fecha</th>
+      <th>Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-inspeccion>
+    <tr>
+      <td>{{ inspeccion.id }}</td>
+      <td>{{ inspeccion.tieneRalladuras ? 'Sí' : 'No' }}</td>
+      <td>{{ inspeccion.cantidadCombustible }}</td>
+      <td>{{ inspeccion.tieneGomaRespuesta ? 'Sí' : 'No' }}</td>
+      <td>{{ inspeccion.fecha | date: 'shortDate' }}</td>
+      <td>
+
+        <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success" style="margin-right: 6px;" (click)="editInspeccion(inspeccion)"></button>
+        <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteInspeccion(inspeccion.id)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog header="{{ isNew ? 'Nueva Inspección' : 'Editar Inspección' }}" [(visible)]="displayDialog" [modal]="true" [closable]="false">
+  <form [formGroup]="inspeccionForm" (ngSubmit)="saveInspeccion()">
+    <div class="p-fluid">
+      <div class="p-field-checkbox">
+        <p-checkbox id="tieneRalladuras" formControlName="tieneRalladuras" binary="true"></p-checkbox>
+        <label for="tieneRalladuras">Tiene Ralladuras</label>
+      </div>
+
+      <div class="p-field">
+        <label for="cantidadCombustible">Cantidad de Combustible</label>
+        <p-dropdown id="cantidadCombustible" formControlName="cantidadCombustible" [options]="[
+          { label: '1/4', value: '1/4' },
+          { label: '1/2', value: '1/2' },
+          { label: '3/4', value: '3/4' },
+          { label: 'Lleno', value: 'lleno' }
+        ]"></p-dropdown>
+      </div>
+
+      <div class="p-field-checkbox">
+        <p-checkbox id="tieneGomaRespuesta" formControlName="tieneGomaRespuesta" binary="true"></p-checkbox>
+        <label for="tieneGomaRespuesta">Tiene Goma Respuesta</label>
+      </div>
+
+      <div class="p-field-checkbox">
+        <p-checkbox id="tieneGato" formControlName="tieneGato" binary="true"></p-checkbox>
+        <label for="tieneGato">Tiene Gato</label>
+      </div>
+
+      <div class="p-field-checkbox">
+        <p-checkbox id="tieneRoturasCristal" formControlName="tieneRoturasCristal" binary="true"></p-checkbox>
+        <label for="tieneRoturasCristal">Tiene Roturas de Cristal</label>
+      </div>
+
+      <div class="p-field">
+        <label for="estadoGomas">Estado de las Gomas</label>
+        <input id="estadoGomas" type="text" pInputText formControlName="estadoGomas"/>
+      </div>
+
+      <div class="p-field-checkbox">
+        <p-checkbox id="lucesFuncionando" formControlName="lucesFuncionando" binary="true"></p-checkbox>
+        <label for="lucesFuncionando">Luces Funcionando</label>
+      </div>
+
+      <div class="p-field">
+        <label for="liquidoFrenos">Líquido de Frenos</label>
+        <p-dropdown id="liquidoFrenos" formControlName="liquidoFrenos" [options]="[
+          { label: 'Bajo', value: 'bajo' },
+          { label: 'Medio', value: 'medio' },
+          { label: 'Alto', value: 'alto' }
+        ]"></p-dropdown>
+      </div>
+
+      <div class="p-field">
+        <label for="presionNeumaticos">Presión de Neumáticos</label>
+        <p-dropdown id="presionNeumaticos" formControlName="presionNeumaticos" [options]="[
+          { label: 'Baja', value: 'baja' },
+          { label: 'Normal', value: 'normal' },
+          { label: 'Alta', value: 'alta' }
+        ]"></p-dropdown>
+      </div>
+
+      <div class="p-field">
+        <label for="nivelAceite">Nivel de Aceite</label>
+        <p-dropdown id="nivelAceite" formControlName="nivelAceite" [options]="[
+          { label: 'Bajo', value: 'bajo' },
+          { label: 'Medio', value: 'medio' },
+          { label: 'Alto', value: 'alto' }
+        ]"></p-dropdown>
+      </div>
+      <div class="field">
+        <label for="estado">Estado</label>
+        <p-dropdown [options]="estados" formControlName="estado" optionLabel="label" optionValue="value" placeholder="Seleccionar Estado"></p-dropdown>
+
+      </div>
+
+      <div class="p-field">
+        <label for="observaciones">Observaciones</label>
+        <textarea id="observaciones" formControlName="observaciones" pInputTextarea rows="3"></textarea>
+      </div>
+
+      <div class="p-field">
+        <label for="fecha">Fecha</label>
+        <p-calendar id="fecha" formControlName="fecha" dateFormat="yy-mm-dd"></p-calendar>
+      </div>
+
+
+      <div class="field">
+        <label for="estado">Vehículo</label>
+        <p-dropdown [options]="vehiculos" formControlName="idVehiculo" optionLabel="nombre" optionValue="id" placeholder="Seleccionar vehiculo"></p-dropdown>
+
+      </div>
+
+      <div class="p-field">
+        <label for="idCliente">Cliente</label>
+        <input id="idCliente" type="number" pInputText formControlName="idCliente"/>
+      </div>
+
+      <div class="p-field">
+        <label for="idEmpleadoInspeccion">Empleado de Inspección</label>
+        <input id="idEmpleadoInspeccion" type="number" pInputText formControlName="idEmpleadoInspeccion"/>
+      </div>
+    </div>
+
+    <p-footer style="margin: 10px;">
+      <p-button label="Guardar" icon="pi pi-check"  type="submit" ></p-button>
+      <p-button label="Cancelar" icon="pi pi-times" (click)="hideDialog()"></p-button>
+    </p-footer>
+
+  </form>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>
+
+<p-toast preventOpenDuplicates="true"></p-toast>
