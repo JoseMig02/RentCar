@@ -12,6 +12,7 @@ import { VehiculoComponent } from './features/empleado/components/vehiculo/vehic
 import { EmpleadoComponent } from './features/empleado/components/empleado/empleado.component';
 import { InspeccionComponent } from './features/empleado/components/inspeccion/inspeccion.component';
 import { ClienteComponent } from './features/empleado/components/cliente/cliente.component';
+import { RentaDevolucionComponent } from './features/empleado/components/renta-devolucion/renta-devolucion.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'empleado/empleados', component: EmpleadoComponent },
       { path: 'empleado/inspecciones', component: InspeccionComponent },
       { path: 'empleado/cliente', component: ClienteComponent },
+      { path: 'empleado/rentaDevolucion', component: RentaDevolucionComponent },
       // otras rutas dentro del layout
     ]
   },

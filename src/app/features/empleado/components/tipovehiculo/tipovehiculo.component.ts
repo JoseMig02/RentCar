@@ -39,10 +39,16 @@ export class TipoVehiculoComponent implements OnInit {
     this.loadTipoVehiculos();
   }
 
+
   loadTipoVehiculos(): void {
-    this.tipoVehiculoService.getAll().subscribe(data => {
-      this.tipoVehiculos = data;
-    });
+    this.tipoVehiculoService.getAll().subscribe(
+      data => {
+        this.tipoVehiculos = data;
+      },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los tipos de vehículo', life: 2000 });
+      }
+    );
   }
 
   openNew(): void {
@@ -71,10 +77,15 @@ export class TipoVehiculoComponent implements OnInit {
       acceptIcon:"none",
       rejectIcon:"none",
       accept: () => {
-        this.tipoVehiculoService.delete(id).subscribe(() => {
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Tipo de vehículo eliminado',life: 4000 });
-          this.loadTipoVehiculos();
-        });
+        this.tipoVehiculoService.delete(id).subscribe(
+          () => {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Tipo de vehículo eliminado',life: 4000 });
+            this.loadTipoVehiculos();
+          },
+          error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al eliminar el tipo de vehículo', life: 2000 });
+          }
+        );
       }
     });
   }

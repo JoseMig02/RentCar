@@ -32,9 +32,7 @@ import {isPlatformBrowser } from '@angular/common';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { environment } from './enviroment/environment';
 import { ToastModule } from 'primeng/toast';
-import { EmpleadoComponent } from './features/empleado/components/empleado/empleado.component';
-import { InspeccionComponent } from './features/empleado/components/inspeccion/inspeccion.component';
-import { ClienteComponent } from './features/empleado/components/cliente/cliente.component';
+
 
 @NgModule({
   declarations: [

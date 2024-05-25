@@ -1,0 +1,128 @@
+<p-toast preventOpenDuplicates="true"></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <div class="card px-6 py-6">
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <div class="my-2">
+            <button pButton pRipple label="Nueva Renta" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+          </div>
+        </ng-template>
+      </p-toolbar>
+
+      <p-table #dt [value]="rentas" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]" responsiveLayout="scroll" selectionMode="multiple" [dataKey]="'noRenta'">
+        <ng-template pTemplate="caption">
+          <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 class="m-0">Gestión de Rentas y Devoluciones</h5>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" placeholder="Buscar..." class="w-full sm:w-auto"/>
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="noRenta">No. Renta <p-sortIcon field="noRenta"></p-sortIcon></th>
+            <th pSortableColumn="fechaRenta">Fecha Renta <p-sortIcon field="fechaRenta"></p-sortIcon></th>
+            <th pSortableColumn="fechaDevolucion">Fecha Devolución <p-sortIcon field="fechaDevolucion"></p-sortIcon></th>
+            <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+            <th pSortableColumn="estadoPago">Estado del pago <p-sortIcon field="estadoPago"></p-sortIcon></th>
+            <th pSortableColumn="montoXDia">Monto por dia<p-sortIcon field="montoXDia"></p-sortIcon></th>
+            <th pSortableColumn="cantidadDias">Cantidad de dias<p-sortIcon field="cantidadDias"></p-sortIcon></th>
+            <th pSortableColumn="comentario">comentario <p-sortIcon field="comentario"></p-sortIcon></th>
+            <th>Acciones</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-renta>
+          <tr>
+            <td>{{ renta.noRenta }}</td>
+            <td>{{ renta.fechaRenta | date }}</td>
+            <td>{{ renta.fechaDevolucion | date }}</td>
+            <td><p-tag [value]="renta.estado" [severity]="renta.estado === 'renta' ? 'warning' : 'success'"></p-tag></td>
+          
+            <td>{{ renta.estadoPago }}</td>
+<td>{{ renta.montoXDia }}</td>
+<td>{{ renta.cantidadDias }}</td>
+<td>{{ renta.comentario }}</td>
+<td>
+  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editRenta(renta)"></button>
+
+</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="Detalles de la Renta" [modal]="true" [closable]="false" [dismissableMask]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="rentaForm">
+          <div class="field">
+            <label for="noRenta">No. de Renta</label>
+            <input type="number" formControlName="noRenta" pInputText id="noRenta" required autofocus />
+            <div *ngIf="rentaForm.get('noRenta')?.invalid && rentaForm.get('noRenta')?.touched" class="text-red-600 text-sm mt-1">No. de Renta es requerido</div>
+          </div>
+          <div class="field">
+            <label for="fechaRenta">Fecha Renta</label>
+            <p-calendar [minDate]="minDate" [maxDate]="maxDate" formControlName="fechaRenta" id="fechaRenta" dateFormat="yy-mm-dd" showIcon></p-calendar>
+            <div *ngIf="rentaForm.get('fechaRenta')?.invalid && rentaForm.get('fechaRenta')?.touched" class="text-red-600 text-sm mt-1">Fecha Renta es requerida</div>
+          </div>
+          <div class="field">
+            <label for="fechaDevolucion">Fecha Devolución</label>
+            <p-calendar [minDate]="minDate" [maxDate]="maxDate" formControlName="fechaDevolucion" id="fechaDevolucion" dateFormat="yy-mm-dd" showIcon></p-calendar>
+          </div>
+          <div class="field">
+            <label for="montoXDia">Monto por Día</label>
+            <input type="number" formControlName="montoXDia" pInputText id="montoXDia" required />
+            <div *ngIf="rentaForm.get('montoXDia')?.invalid && rentaForm.get('montoXDia')?.touched" class="text-red-600 text-sm mt-1">Monto por Día es requerido</div>
+          </div>
+          <div class="field">
+            <label for="cantidadDias">Cantidad de Días</label>
+            <input type="number" formControlName="cantidadDias" pInputText id="cantidadDias" required />
+            <div *ngIf="rentaForm.get('cantidadDias')?.invalid && rentaForm.get('cantidadDias')?.touched" class="text-red-600 text-sm mt-1">Cantidad de Días es requerida</div>
+          </div>
+          <div class="field">
+            <label for="comentario">Comentario</label>
+            <textarea id="comentario" formControlName="comentario" pInputTextarea rows="3" cols="20"></textarea>
+          </div>
+          <div class="field">
+            <label for="estado">Estado</label>
+            <p-dropdown [options]="estados" formControlName="estado" optionLabel="label" optionValue="value" placeholder="Seleccionar Estado"></p-dropdown>
+            <div *ngIf="rentaForm.get('estado')?.invalid && rentaForm.get('estado')?.touched" class="text-red-600 text-sm mt-1">Estado es requerido</div>
+          </div>
+          <div class="field">
+            <label for="estadoPago">Estado del Pago</label>
+            <p-dropdown [options]="estadosPago" formControlName="estadoPago" optionLabel="label" optionValue="value" placeholder="Seleccionar Estado de Pago"></p-dropdown>
+            <div *ngIf="rentaForm.get('estadoPago')?.invalid && rentaForm.get('estadoPago')?.touched" class="text-red-600 text-sm mt-1">Estado del Pago es requerido</div>
+          </div>
+          <div class="field" [ngClass]="{'p-invalid': rentaForm.controls['idVehiculo'].invalid && rentaForm.controls['idVehiculo'].touched}">
+            <label for="idVehiculo">Vehículo</label>
+            <p-dropdown [options]="vehiculos" formControlName="idVehiculo" optionLabel="nombre" optionValue="id" placeholder="Seleccionar vehículo"></p-dropdown>
+            <div *ngIf="rentaForm.controls['idVehiculo'].invalid && rentaForm.controls['idVehiculo'].touched" class="text-red-600 text-sm mt-1">
+              Vehículo es requerido.
+            </div>
+          </div>
+    
+          <div class="p-field" [ngClass]="{'p-invalid': rentaForm.controls['idCliente'].invalid && rentaForm.controls['idCliente'].touched}">
+            <label for="idCliente">Cliente</label>
+            <p-dropdown [options]="clientes" formControlName="idCliente" optionLabel="nombre" optionValue="id" placeholder="Seleccionar cliente"></p-dropdown>
+            <div *ngIf="rentaForm.controls['idCliente'].invalid && rentaForm.controls['idCliente'].touched" class="text-red-600 text-sm mt-1">
+              Cliente es requerido.
+            </div>
+          </div>
+          <div class="field">
+            <label for="totalPago">Total Pago</label>
+            <input type="number" formControlName="totalPago" pInputText id="totalPago" required />
+            <div *ngIf="rentaForm.get('totalPago')?.invalid && rentaForm.get('totalPago')?.touched" class="text-red-600 text-sm mt-1">Total Pago es requerido</div>
+          </div>
+
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveRenta()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>
+
+<p-confirmDialog></p-confirmDialog>

@@ -4,6 +4,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Cliente } from '../../../../models/Cliente';
 import { ClienteService } from '../../../../services/cliente.service';
 
+
+interface TipoPersona {
+  label: string;
+  value: string;
+}
 @Component({
   selector: 'app-cliente',
   templateUrl: './cliente.component.html',
@@ -15,11 +20,13 @@ export class ClienteComponent implements OnInit {
   clientes: Cliente[] = [];
   clientesForm: FormGroup;
   displayDialog: boolean = false;
+  tipoPersona:TipoPersona[] | undefined
 
   estados: { label: string, value: string }[] = [
     { label: 'Activo', value: 'activo' },
     { label: 'Inactivo', value: 'inactivo' }
   ];
+
 
   constructor(
     private clienteService: ClienteService,
@@ -40,6 +47,11 @@ export class ClienteComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadClientes();
+    this.tipoPersona = [
+      { label: 'Física', value: 'Física' },
+      {label: 'Jurídica', value: 'Jurídica' },
+    
+  ];
   }
 
   loadClientes(): void {
