@@ -34,6 +34,13 @@ export class RentaDevolucionComponent implements OnInit {
   minDate: Date | undefined;
   editMode: boolean =false;
 
+    // Filters
+    filterClienteId: number | undefined ;
+    filterFechaInicio: Date | null = null;
+    filterFechaFin: Date | null = null;
+    filterFecha: Date | null = null;
+    filterVehiculoId: number | undefined;
+
   constructor(
     private rentaDevolucionService: RentaDevolucionService,
     private empleadoService: EmpleadoService,
@@ -197,4 +204,42 @@ export class RentaDevolucionComponent implements OnInit {
       }
     });
   }
+
+  filterRentas(): void {
+    if (this.filterClienteId) {
+      this.rentaDevolucionService.consultarRentasPorCliente(this.filterClienteId).subscribe(
+        (data: RentaDevolucion[]) => this.rentas = data,
+        error => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al filtrar por cliente' })
+      );
+    } else if (this.filterFechaInicio && this.filterFechaFin) {
+      const fechaInicio = this.filterFechaInicio.toISOString().split('T')[0];
+      const fechaFin = this.filterFechaFin.toISOString().split('T')[0];
+      this.rentaDevolucionService.consultarRentasEntreFechas(fechaInicio, fechaFin).subscribe(
+        (data: RentaDevolucion[]) => this.rentas = data,
+        error => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al filtrar entre fechas' })
+      );
+    } else if (this.filterFecha) {
+      const fecha = this.filterFecha.toISOString().split('T')[0];
+      this.rentaDevolucionService.consultarRentasEnFecha(fecha).subscribe(
+        (data: RentaDevolucion[]) => this.rentas = data,
+        error => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al filtrar por fecha' })
+      );
+    } else if (this.filterVehiculoId) {
+      this.rentaDevolucionService.consultarRentasPorVehiculo(this.filterVehiculoId).subscribe(
+        (data: RentaDevolucion[]) => this.rentas = data,
+        error => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al filtrar por vehículo' })
+      );
+    } else {
+      this.loadRentas();
+    }
+  }
+  clearFilters(): void {
+    this.filterClienteId = undefined;
+    this.filterFechaInicio = null;
+    this.filterFechaFin = null;
+    this.filterFecha = null;
+    this.filterVehiculoId = undefined;
+    this.loadRentas(); // Recargar las rentas después de limpiar los filtros
+  }
+  
 }

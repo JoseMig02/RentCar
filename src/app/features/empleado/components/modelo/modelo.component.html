@@ -37,7 +37,13 @@
             <tr>
               <td>{{ modelo.nombre }}</td>
               <td>
-                <img [src]="modelo.imagen" alt="Imagen de la Marca" width="50" height="50" *ngIf="modelo.imagen" />
+               
+                <p-image 
+                [src]="modelo.imagen"
+                alt="Imagen de la Marca"
+                *ngIf="modelo.imagen"
+                width="100" height="70"
+                [preview]="true" />
                 <span *ngIf="!modelo.imagen">No disponible</span>
             </td>
               <td>{{ modelo.descripcion }}</td>

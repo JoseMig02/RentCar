@@ -32,12 +32,14 @@ import {isPlatformBrowser } from '@angular/common';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { environment } from './enviroment/environment';
 import { ToastModule } from 'primeng/toast';
+import { AccessComponent } from './shared/components/access/access.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NofoundComponent,
+    AccessComponent
  
 
 

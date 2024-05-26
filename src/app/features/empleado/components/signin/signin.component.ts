@@ -41,11 +41,7 @@ export class SigninComponent implements OnInit {
     this.empleadoService.signin(empleado).subscribe({
       next: (token:any) => {
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Inicio de sesión exitoso', life: 4000 });
-        this.loading = false;
-        console.log(token)
-        localStorage.setItem('token', token.token);
-        this.router.navigate(['/']);
-        console.log(this.signinForm.value)
+        this.router.navigate(['/'])
       },
       error: (error) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message, life: 2000 });

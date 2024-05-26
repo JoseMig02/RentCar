@@ -30,8 +30,10 @@ export class AppTopBarComponent {
   }
 
   logout() {
-    localStorage.removeItem('token')
+
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('employeeId');
     this.profileDialogVisible = false;
-    this.router.navigate(['/login']); // Redirigir a la página de inicio de sesión
+    this.router.navigate(['/empleado/signIn']); // Redirigir a la página de inicio de sesión
   }
 }

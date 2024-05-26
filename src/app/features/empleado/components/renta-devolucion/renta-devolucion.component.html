@@ -3,13 +3,45 @@
   <div class="col-12">
     <div class="card px-6 py-6">
       <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
+        <ng-template pTemplate="right">
           <div class="my-2">
             <button pButton pRipple label="Nueva Renta" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
           </div>
+          
         </ng-template>
+        <div class="p-grid p-align-end p-justify-center">
+          <div class="p-col-12 p-md-4  mb-1">
+            <label for="filterClienteId">Filtrar por Cliente</label>
+            <p-dropdown id="filterClienteId" [options]="clientes" [(ngModel)]="filterClienteId" optionLabel="nombre" optionValue="id" placeholder="Seleccionar cliente"></p-dropdown>
+          
+          </div>
+          <div class="p-col-12 p-md-4 mb-1" >
+            <label for="filterFechaInicio">Filtrar desde Fecha</label>
+            
+            <p-calendar id="filterFechaInicio" [(ngModel)]="filterFechaInicio" dateFormat="yy-mm-dd"></p-calendar>
+          </div>
+          <div class="p-col-12 p-md-4"  mb-1>
+            <label for="filterFechaFin">Hasta Fecha</label>
+            <p-calendar id="filterFechaFin" [(ngModel)]="filterFechaFin" dateFormat="yy-mm-dd"></p-calendar>
+          </div>
+          <div class="p-col-12 p-md-4   mb-1">
+            <label for="filterFecha">Filtrar por Fecha</label>
+            <p-calendar id="filterFecha" [(ngModel)]="filterFecha" dateFormat="yy-mm-dd"></p-calendar>
+          </div>
+          <div class="p-col-12 p-md-4  mb-1">
+            <label for="filterVehiculoId">Filtrar por Vehículo</label>
+            <p-dropdown  id="filterVehiculoId" [options]="vehiculos" [(ngModel)]="filterVehiculoId"  optionLabel="nombre" optionValue="id" placeholder="Seleccionar vehiculo"></p-dropdown>
+          </div>
+          <div class="p-col-12 p-md-4 mt-4">
+            <button class="mr-2" pButton type="button" label="Filtrar" (click)="filterRentas()"></button>
+            <button pButton type="button" label="Limpiar Filtros" icon="pi pi-filter-slash" (click)="clearFilters()"></button>
+   </div>
+         
+        </div>
+  
+        
       </p-toolbar>
-
+     
       <p-table #dt [value]="rentas" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]" responsiveLayout="scroll" selectionMode="multiple" [dataKey]="'noRenta'">
         <ng-template pTemplate="caption">
           <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">

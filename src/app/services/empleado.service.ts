@@ -17,8 +17,8 @@ export class EmpleadoService {
     return this.http.get<Empleado[]>(`${this.apiUrl}`);
   }
 
-  getEmpleadoById(id: string): Observable<Empleado> {
-    return this.http.get<Empleado>(`${this.apiUrl}/${id}`);
+  getEmpleadoById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
   signup(empleado: Empleado): Observable<Empleado> {
@@ -30,11 +30,12 @@ export class EmpleadoService {
       tap(response => {
         if (response.token) {
           const decodedToken: any = jwtDecode(response.token);
-          console.log(decodedToken)
           const empleadoId = decodedToken.empleadoId  ; // Asegúrate de que el ID del empleado esté presente en el token
+          const role = decodedToken.role
 
           localStorage.setItem('authToken', response.token);
           localStorage.setItem('employeeId', empleadoId); // Almacenar el ID del empleado
+          localStorage.setItem('role',role)
         }
       })
     );
@@ -65,6 +66,19 @@ export class EmpleadoService {
   isAuthenticated(): boolean {
     return !!localStorage.getItem('authToken');
   }
+  // Método para verificar si el usuario es administrador
+  isAdmin(): boolean {
+    const role = localStorage.getItem('role');
+    return role === 'admin';
+  }
+
+  // Método para verificar si el usuario es empleado
+  isEmpleado(): boolean {
+    const role = localStorage.getItem('role');
+    return role === 'empleado';
+  }
+  
+  
 }
 
 

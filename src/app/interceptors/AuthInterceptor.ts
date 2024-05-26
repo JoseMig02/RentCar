@@ -22,27 +22,22 @@ export class AuthInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('token');
+  
+      const token = localStorage.getItem('authToken');
 
-      if (!token) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Token no encontrado. Por favor, inicie sesión.' });
-        this.router.navigate(['/']);
-        return throwError('Token no encontrado');
-      } else {
+      if (token) {
         req = req.clone({
           setHeaders: {
             Authorization: `Bearer ${token}`
           }
         });
       }
-    }
+    
 
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No autorizado. Por favor, inicie sesión nuevamente.' });
-          this.router.navigate(['/']);
+          this.router.navigate(['/empleado/signIn']);
         }
         return throwError(error);
       })
