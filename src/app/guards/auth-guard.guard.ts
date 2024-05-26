@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
       return true;
     } else {
       // Usuario no autenticado, redirigir a la página de inicio de sesión
-      this.router.navigate(['/empleado/signIn'], { queryParams: { returnUrl: state.url } });
+      this.router.navigate(['/empleado/signIn']);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Inicie Seccion', life: 4000 });
       return false;
     }

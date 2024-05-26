@@ -37,6 +37,7 @@ import { PanelModule } from 'primeng/panel';
 import { ClienteComponent } from '../components/cliente/cliente.component';
 import { RentaDevolucionComponent } from '../components/renta-devolucion/renta-devolucion.component';
 import { ImageModule } from 'primeng/image';
+import { ReporteComponent } from '../components/reporte/reporte.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ImageModule } from 'primeng/image';
     EmpleadoComponent,
     InspeccionComponent,
     ClienteComponent,
-    RentaDevolucionComponent
+    RentaDevolucionComponent,
+    ReporteComponent
 
 
   ],

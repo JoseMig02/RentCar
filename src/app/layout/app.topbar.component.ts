@@ -33,6 +33,7 @@ export class AppTopBarComponent {
 
     localStorage.removeItem('authToken');
     localStorage.removeItem('employeeId');
+    localStorage.removeItem('role')
     this.profileDialogVisible = false;
     this.router.navigate(['/empleado/signIn']); // Redirigir a la página de inicio de sesión
   }

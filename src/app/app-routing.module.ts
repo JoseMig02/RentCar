@@ -14,7 +14,9 @@ import { ClienteComponent } from './features/empleado/components/cliente/cliente
 import { RentaDevolucionComponent } from './features/empleado/components/renta-devolucion/renta-devolucion.component';
 import { AuthGuard } from './guards/auth-guard.guard';
 import { AdminGuard } from './guards/admin-guard.guard';
+import { OnlyAdminGuard } from './guards/admin.guard';
 import { AccessComponent } from './shared/components/access/access.component';
+import { ReporteComponent } from './features/empleado/components/reporte/reporte.component';
 
 
 const routes: Routes = [
@@ -28,10 +30,11 @@ const routes: Routes = [
       { path: 'empleado/tiposCombustible', component: TipoCombustibleComponent },
       { path: 'empleado/modelos', component: ModeloComponent },
       { path: 'empleado/vehiculos', component: VehiculoComponent },
-      { path: 'empleado/empleados', component: EmpleadoComponent }, // Requiere ser administrador
+      { path: 'empleado/empleados', component: EmpleadoComponent, canActivate:[OnlyAdminGuard] }, // Requiere ser administrador
       { path: 'empleado/inspecciones', component: InspeccionComponent },
       { path: 'empleado/cliente', component: ClienteComponent },
       { path: 'empleado/rentaDevolucion', component: RentaDevolucionComponent },
+      // { path: 'empleado/reportes', component: ReporteComponent },
       // Otras rutas dentro del layout
     ]
   },

@@ -1,0 +1,25 @@
+<div class="container">
+    <h2>Generar Reporte</h2>
+    <form [formGroup]="reporteForm" (ngSubmit)="generarReporte()">
+        <div class="form-group mb-3">
+            <label for="tipoReporte">Tipo de Reporte</label>
+            <p-dropdown id="tipoReporte" label="Tipo reporte" [options]="tiposReporte" formControlName="tipoReporte" placeholder="Seleccione un tipo de reporte"></p-dropdown>
+        </div>
+
+        <div *ngIf="reporteForm.get('tipoReporte')?.value === 'fechas'" class="form-group">
+            <label for="fechaInicio">Fecha de Inicio: </label>
+            <p-calendar [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" id="fechaInicio" formControlName="fechaInicio"></p-calendar>
+            <label for="fechaFin">Fecha de Fin: </label>
+            <p-calendar [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" id="fechaFin" formControlName="fechaFin"></p-calendar>
+        </div>
+
+        <div *ngIf="reporteForm.get('tipoReporte')?.value === 'tipoVehiculo'" class="form-group">
+            <label for="idTipoVehiculo">Tipo de Vehículo</label>
+            <p-dropdown id="idTipoVehiculo" [options]="tiposVehiculo" formControlName="idTipoVehiculo" placeholder="Seleccione un tipo de vehículo"></p-dropdown>
+        </div>
+
+        <button pButton type="submit" label="Generar Reporte" class="mt-3" [disabled]="!reporteForm.valid || !['fechas', 'tipoVehiculo'].includes(reporteForm.get('tipoReporte')?.value)"></button>
+        <button pButton type="button" label="Limpiar Filtros" class="mt-3 ml-2" (click)="limpiarFiltros()"></button>
+    </form>
+</div>
+<p-toast preventOpenDuplicates="true"></p-toast>

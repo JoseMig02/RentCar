@@ -39,8 +39,7 @@ import { AccessComponent } from './shared/components/access/access.component';
   declarations: [
     AppComponent,
     NofoundComponent,
-    AccessComponent
- 
+    AccessComponent,
 
 
 

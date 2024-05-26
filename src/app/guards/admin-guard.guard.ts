@@ -13,19 +13,19 @@ export class AdminGuard implements CanActivate {
     private messageService: MessageService,
   ) {}
 
-  async canActivate(
+  canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Promise<boolean | UrlTree> {
+    state: RouterStateSnapshot):boolean {
 
     // Verificar si el usuario está autenticado
     if (this.empleadoService.isAuthenticated()) {
       // Verificar si el usuario es administrador
-      if (await this.empleadoService.isAdmin()) {
+      if ( this.empleadoService.isAdmin()) {
         // Usuario autenticado y es administrador, permitir acceso a la ruta
         return true;
       } else {
         // Usuario autenticado pero no es administrador, verificar si es empleado
-        const isEmpleado = await this.empleadoService.isEmpleado();
+        const isEmpleado = this.empleadoService.isEmpleado();
         if (isEmpleado) {
           // Usuario autenticado y es empleado, permitir acceso a la ruta
           return true;

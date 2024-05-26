@@ -167,6 +167,7 @@ export class RentaDevolucionComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Completar Campos', life: 2000 });
       return;
     }
+    console.log(this.rentaForm.value)
 
     const empleadoId = JSON.stringify(this.empleadoService.getEmployeeId());
     if (empleadoId) {
