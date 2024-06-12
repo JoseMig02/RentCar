@@ -30,7 +30,15 @@ Imagenes del proyecto rentCar
 
 ![image](https://github.com/JoseMig02/RentCar/assets/159935567/3438628e-aed9-4c29-9060-f9d128f1ad35)
 
+![image](https://github.com/JoseMig02/RentCar/assets/159935567/cfc6e2b8-3a3c-452d-8ad8-07f6279b342f)
+
 ![image](https://github.com/JoseMig02/RentCar/assets/159935567/fbd9c762-b921-49ac-aa8e-2e47db9c1d30)
+
+![image](https://github.com/JoseMig02/RentCar/assets/159935567/bdad9354-1ce6-4660-b07e-bf7744e4fa3c)
+
+![image](https://github.com/JoseMig02/RentCar/assets/159935567/46dd281c-1510-4231-b7db-9a7929282328)
+
+
 
 
 
