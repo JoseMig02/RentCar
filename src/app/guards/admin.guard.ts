@@ -39,7 +39,7 @@ export class OnlyAdminGuard implements CanActivate {
         severity: 'error',
         summary: 'Error',
         detail: 'Inicie sesión',
-        life: 4000
+        life: 2000
       });
        this.router.navigate(['/empleado/signIn']);
        return false

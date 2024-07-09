@@ -17,7 +17,6 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { HttpClientModule } from '@angular/common/http';
 import { MarcaListComponent } from '../components/marca-list/marca-list.component';
-import { MessagesModule } from 'primeng/messages';
 
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';

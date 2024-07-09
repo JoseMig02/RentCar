@@ -39,7 +39,7 @@ export class AdminGuard implements CanActivate {
     } else {
       // Usuario no autenticado, redirigir a la página de inicio de sesión
       this.router.createUrlTree(['/empleado/signIn']);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Inicie Seccion', life: 4000 });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Inicie Seccion', life: 2000 });
       return false
     }
   }

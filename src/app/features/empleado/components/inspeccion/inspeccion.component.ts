@@ -10,10 +10,11 @@ import { ClienteService } from '../../../../services/cliente.service';
 import { EmpleadoService } from '../../../../services/empleado.service';
 import { json } from 'express';
 
-interface Estado {
+interface inspeccion {
   label: string;
   value: string;
 }
+
 @Component({
   selector: 'app-inspeccion',
   templateUrl: './inspeccion.component.html',
@@ -23,19 +24,23 @@ interface Estado {
 export class InspeccionComponent implements OnInit {
   inspeccionForm: FormGroup;
   inspecciones: Inspeccion[] = [];
-  vehiculos: Vehiculo[] =[];
-  clientes: Cliente[]=[];
+  vehiculos: Vehiculo[] = [];
+  clientes: Cliente[] = [];
   displayDialog: boolean = false;
   isNew: boolean = false;
-  selectedInspeccion:any
-  estados: Estado[]=[]
+  selectedInspeccion: any
+  estados: inspeccion[] = []
+  cantidadCombustible:inspeccion[]=[]
+  liquidoFrenos: inspeccion[] = []
+  presionNeumaticos:inspeccion[]=[]
+  nivelAceite:inspeccion[]=[]
 
   constructor(
     private fb: FormBuilder,
     private inspeccionService: InspeccionService,
     private vehiculoService: VehiculoService,
     private clienteService: ClienteService,
-    private empleadoService:EmpleadoService,
+    private empleadoService: EmpleadoService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
@@ -65,8 +70,28 @@ export class InspeccionComponent implements OnInit {
     this.estados = [
       { label: 'Activo', value: 'activo' },
       { label: 'Inactivo', value: 'inactivo' },
-
     ];
+    this.cantidadCombustible = [
+      { label: '1/4', value: '1/4' },
+      { label: '1/2', value: '1/2' },
+      { label: '3/4', value: '3/4' },
+      { label: 'Lleno', value: 'lleno' }
+    ];
+    this.liquidoFrenos = [
+      { label: 'Bajo', value: 'bajo' },
+      { label: 'Medio', value: 'medio' },
+      { label: 'Alto', value: 'alto' }
+    ]
+    this.presionNeumaticos = [
+      { label: 'Baja', value: 'baja' },
+      { label: 'Normal', value: 'normal' },
+      { label: 'Alta', value: 'alta' }
+    ]
+    this.nivelAceite = [
+      { label: 'Bajo', value: 'bajo' },
+      { label: 'Medio', value: 'medio' },
+      { label: 'Alto', value: 'alto' }
+    ]
   }
 
   loadInspecciones(): void {
@@ -81,9 +106,9 @@ export class InspeccionComponent implements OnInit {
     });
   }
 
-  loadClientes():void{
-    this.clienteService.getAll().subscribe((data:Cliente[]) =>{
-      this.clientes =data
+  loadClientes(): void {
+    this.clienteService.getAll().subscribe((data: Cliente[]) => {
+      this.clientes = data.filter(cliente => cliente.estado === 'activo')
     })
   }
   openNew(): void {
@@ -115,23 +140,22 @@ export class InspeccionComponent implements OnInit {
 
   saveInspeccion(): void {
     if (this.inspeccionForm.invalid) {
-      console.log(this.inspeccionForm.value)
       this.inspeccionForm.markAllAsTouched();
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Por favor complete los campos obligatorios' });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Por favor complete los campos obligatorios', life: 2000  });
       return;
     }
 
     const inspeccion = this.inspeccionForm.value as Inspeccion;
     const empleadoId = this.empleadoService.getEmployeeId();
-    if(empleadoId){
-       inspeccion.idEmpleadoInspeccion=  JSON.parse(empleadoId);
+    if (empleadoId) {
+      inspeccion.idEmpleadoInspeccion = JSON.parse(empleadoId);
     }
-      // Verificación de campos checkbox
-  inspeccion.tieneRalladuras = inspeccion.tieneRalladuras || false;
-  inspeccion.tieneGomaRespuesta = inspeccion.tieneGomaRespuesta || false;
-  inspeccion.tieneGato = inspeccion.tieneGato || false;
-  inspeccion.tieneRoturasCristal = inspeccion.tieneRoturasCristal || false;
-  inspeccion.lucesFuncionando = inspeccion.lucesFuncionando || false;
+    // Verificación de campos checkbox
+    inspeccion.tieneRalladuras = inspeccion.tieneRalladuras || false;
+    inspeccion.tieneGomaRespuesta = inspeccion.tieneGomaRespuesta || false;
+    inspeccion.tieneGato = inspeccion.tieneGato || false;
+    inspeccion.tieneRoturasCristal = inspeccion.tieneRoturasCristal || false;
+    inspeccion.lucesFuncionando = inspeccion.lucesFuncionando || false;
 
     if (this.isNew) {
       console.log(inspeccion)

@@ -11,33 +11,40 @@
         </ng-template>
         <div class="p-grid p-align-end p-justify-center">
           <div class="p-col-12 p-md-4  mb-1">
+            <label for="filterType">Filtrar por</label>
+            <p-dropdown id="filterType" [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label" optionValue="value" placeholder="Seleccionar filtro"></p-dropdown>
+          </div>
+          
+          <div class="p-col-12 p-md-4 mb-1" *ngIf="selectedFilter === 'cliente'">
             <label for="filterClienteId">Filtrar por Cliente</label>
             <p-dropdown id="filterClienteId" [options]="clientes" [(ngModel)]="filterClienteId" optionLabel="nombre" optionValue="id" placeholder="Seleccionar cliente"></p-dropdown>
+          </div>
           
-          </div>
-          <div class="p-col-12 p-md-4 mb-1" >
+         
+          <div class="p-col-12 p-md-4 mb-1" *ngIf="selectedFilter === 'fechas'">
             <label for="filterFechaInicio">Filtrar desde Fecha</label>
-            
             <p-calendar id="filterFechaInicio" [(ngModel)]="filterFechaInicio" dateFormat="yy-mm-dd"></p-calendar>
-          </div>
-          <div class="p-col-12 p-md-4"  mb-1>
             <label for="filterFechaFin">Hasta Fecha</label>
             <p-calendar id="filterFechaFin" [(ngModel)]="filterFechaFin" dateFormat="yy-mm-dd"></p-calendar>
+            
           </div>
-          <div class="p-col-12 p-md-4   mb-1">
+          
+          <div class="p-col-12 p-md-4 mb-1" *ngIf="selectedFilter === 'fecha'">
             <label for="filterFecha">Filtrar por Fecha</label>
             <p-calendar id="filterFecha" [(ngModel)]="filterFecha" dateFormat="yy-mm-dd"></p-calendar>
           </div>
-          <div class="p-col-12 p-md-4  mb-1">
+          
+          <div class="p-col-12 p-md-4 mb-1" *ngIf="selectedFilter === 'vehiculo'">
             <label for="filterVehiculoId">Filtrar por Vehículo</label>
-            <p-dropdown  id="filterVehiculoId" [options]="vehiculos" [(ngModel)]="filterVehiculoId"  optionLabel="nombre" optionValue="id" placeholder="Seleccionar vehiculo"></p-dropdown>
+            <p-dropdown id="filterVehiculoId" [options]="vehiculos" [(ngModel)]="filterVehiculoId" optionLabel="nombre" optionValue="id" placeholder="Seleccionar vehículo"></p-dropdown>
           </div>
+        
           <div class="p-col-12 p-md-4 mt-4">
             <button class="mr-2" pButton type="button" label="Filtrar" (click)="filterRentas()"></button>
             <button pButton type="button" label="Limpiar Filtros" icon="pi pi-filter-slash" (click)="clearFilters()"></button>
-   </div>
-         
+          </div>
         </div>
+        
   
         <app-reporte></app-reporte>
       </p-toolbar>
@@ -46,10 +53,7 @@
         <ng-template pTemplate="caption">
           <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5 class="m-0">Gestión de Rentas y Devoluciones</h5>
-            <span class="block mt-2 md:mt-0 p-input-icon-left">
-              <i class="pi pi-search"></i>
-              <input pInputText type="text" placeholder="Buscar..." class="w-full sm:w-auto"/>
-            </span>
+         
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -61,8 +65,9 @@
             <th pSortableColumn="estadoPago">Estado del pago <p-sortIcon field="estadoPago"></p-sortIcon></th>
             <th pSortableColumn="montoXDia">Monto por dia<p-sortIcon field="montoXDia"></p-sortIcon></th>
             <th pSortableColumn="cantidadDias">Cantidad de dias<p-sortIcon field="cantidadDias"></p-sortIcon></th>
-            <th pSortableColumn="comentario">comentario <p-sortIcon field="comentario"></p-sortIcon></th>
+            <th pSortableColumn="comentario">Comentario <p-sortIcon field="comentario"></p-sortIcon></th>
             <th>Acciones</th>
+         
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-renta>
@@ -70,14 +75,16 @@
             <td>{{ renta.noRenta }}</td>
             <td>{{ renta.fechaRenta | date }}</td>
             <td>{{ renta.fechaDevolucion | date }}</td>
-            <td><p-tag [value]="renta.estado" [severity]="renta.estado === 'renta' ? 'warning' : 'success'"></p-tag></td>
+            <td><p-tag [value]="renta.estado === 'renta' ? 'Renta' :'Devolucion'" [severity]="renta.estado === 'renta' ? 'warning' : 'success'"></p-tag></td>
           
-            <td>{{ renta.estadoPago }}</td>
+            <td>{{ renta.estadoPago ==='pendiente' ? 'Pendiente' : 'Pagado' }}</td>
 <td>{{ renta.montoXDia }}</td>
 <td>{{ renta.cantidadDias }}</td>
 <td>{{ renta.comentario }}</td>
 <td>
-  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editRenta(renta)"></button>
+  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mb-2" (click)="editRenta(renta)"></button>
+  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+  (click)="deleteRenta(renta.id)"></button>
 
 </td>
           </tr>

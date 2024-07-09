@@ -30,6 +30,14 @@ export class RentaDevolucionComponent implements OnInit {
     { label: 'Pendiente', value: 'pendiente' },
     { label: 'Pagado', value: 'pagado' }
   ];
+  selectedFilter: string | undefined;
+
+  filterOptions: { label: string, value: string }[] = [
+    { label: 'Cliente', value: 'cliente' },
+    { label: ' Entre Fechas', value: 'fechas' },
+    { label: 'Fecha', value: 'fecha' },
+    { label: 'Vehículo', value: 'vehiculo' }
+  ];
   maxDate: Date | undefined;
   minDate: Date | undefined;
   editMode: boolean =false;
@@ -99,7 +107,7 @@ export class RentaDevolucionComponent implements OnInit {
 
   loadClientes(): void {
     this.clienteService.getAll().subscribe((data: Cliente[]) => {
-      this.clientes = data
+      this.clientes = data.filter(cliente => cliente.estado === 'activo')
     },
     error => {
       console.error('Error al cargar los clientes:', error);
@@ -119,21 +127,6 @@ export class RentaDevolucionComponent implements OnInit {
     this.editMode = true; // Set editMode to true for editing
   }
 
-  // deleteRenta(id: number): void {
-  //   this.confirmationService.confirm({
-  //     message: '¿Está seguro de que desea eliminar esta renta?',
-  //     header: 'Confirmación de eliminación',
-  //     icon: 'pi pi-info-circle',
-  //     acceptButtonStyleClass: "p-button-danger p-button-text",
-  //     rejectButtonStyleClass: "p-button-text",
-  //     accept: () => {
-  //       this.rentaDevolucionService.delete(id).subscribe(() => {
-  //         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Renta eliminada' });
-  //         this.loadRentas();
-  //       });
-  //     }
-  //   });
-  // }
 
   hideDialog(): void {
     this.displayDialog = false;
@@ -205,27 +198,48 @@ export class RentaDevolucionComponent implements OnInit {
       }
     });
   }
-
+  deleteRenta(id: number): void {
+    this.confirmationService.confirm({
+      message: '¿Está seguro de que desea eliminar esta renta?',
+      header: 'Eliminar Cliente',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+     
+      accept: () => {
+        this.rentaDevolucionService.delete(id).subscribe(
+          () => {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Renta eliminada' });
+            this.loadRentas();
+          },
+          error => {
+            console.error('Error al eliminar renta:', error);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al eliminar la renta' });
+          }
+        );
+      }
+    });
+  }
   filterRentas(): void {
-    if (this.filterClienteId) {
+    if (this.selectedFilter === 'cliente' && this.filterClienteId) {
       this.rentaDevolucionService.consultarRentasPorCliente(this.filterClienteId).subscribe(
         (data: RentaDevolucion[]) => this.rentas = data,
         error => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al filtrar por cliente' })
       );
-    } else if (this.filterFechaInicio && this.filterFechaFin) {
+    } else if (this.selectedFilter === 'fechas' && this.filterFechaInicio && this.filterFechaFin) {
       const fechaInicio = this.filterFechaInicio.toISOString().split('T')[0];
       const fechaFin = this.filterFechaFin.toISOString().split('T')[0];
       this.rentaDevolucionService.consultarRentasEntreFechas(fechaInicio, fechaFin).subscribe(
         (data: RentaDevolucion[]) => this.rentas = data,
         error => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al filtrar entre fechas' })
       );
-    } else if (this.filterFecha) {
+    } else if (this.selectedFilter === 'fecha' && this.filterFecha) {
       const fecha = this.filterFecha.toISOString().split('T')[0];
       this.rentaDevolucionService.consultarRentasEnFecha(fecha).subscribe(
         (data: RentaDevolucion[]) => this.rentas = data,
         error => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al filtrar por fecha' })
       );
-    } else if (this.filterVehiculoId) {
+    } else if (this.selectedFilter === 'vehiculo' && this.filterVehiculoId) {
       this.rentaDevolucionService.consultarRentasPorVehiculo(this.filterVehiculoId).subscribe(
         (data: RentaDevolucion[]) => this.rentas = data,
         error => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al filtrar por vehículo' })
@@ -234,7 +248,9 @@ export class RentaDevolucionComponent implements OnInit {
       this.loadRentas();
     }
   }
+
   clearFilters(): void {
+    this.selectedFilter = undefined;
     this.filterClienteId = undefined;
     this.filterFechaInicio = null;
     this.filterFechaFin = null;
@@ -242,5 +258,6 @@ export class RentaDevolucionComponent implements OnInit {
     this.filterVehiculoId = undefined;
     this.loadRentas(); // Recargar las rentas después de limpiar los filtros
   }
-  
 }
+  
+

@@ -15,10 +15,6 @@
         <ng-template pTemplate="caption">
           <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5 class="m-0">Gestión de Empleados</h5>
-            <span class="block mt-2 md:mt-0 p-input-icon-left">
-              <i class="pi pi-search"></i>
-              <input pInputText type="text" placeholder="Buscar..." class="w-full sm:w-auto" />
-            </span>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -26,7 +22,7 @@
             <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
             <th pSortableColumn="cedula">Cédula <p-sortIcon field="cedula"></p-sortIcon></th>
             <th pSortableColumn="correo">Correo <p-sortIcon field="correo"></p-sortIcon></th>
-            <th pSortableColumn="role">Tanda Labor <p-sortIcon field="tandaLabor"></p-sortIcon></th>
+            <th pSortableColumn="tandaLabor" >Tanda Labor <p-sortIcon field="tandaLabor"></p-sortIcon></th>
             <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
             <th pSortableColumn="role">Rol <p-sortIcon field="role"></p-sortIcon></th>
             <th>Acciones</th>
@@ -38,8 +34,9 @@
             <td>{{ empleado.cedula }}</td>
             <td>{{ empleado.correo }}</td>
             <td>{{ empleado.tandaLabor }}</td>
-            <td>{{ empleado.estado }}</td>
-            <td>{{ empleado.role }}</td>
+            <td><p-tag [value]="empleado.estado ==='activo' ? 'Activo' : 'Inactivo'" 
+              [severity]="empleado.estado === 'activo' ? 'success' : 'danger'"></p-tag></td>
+            <td>{{ empleado.role  === 'admin' ? 'Administrador' : empleado.role ==='empleado' ? 'Empleado' : 'Pendiente'}}</td>
             <td>
               <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEmpleado(empleado)"></button>
               <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteEmpleado(empleado.id)"></button>

@@ -52,8 +52,8 @@ export class MarcaListComponent implements OnInit {
 
     this.loadMarcas();
     this.estados = [
-      { label: 'activo', value: 'activo' },
-      {label: 'inactivo', value: 'inactivo' },
+      { label: 'Activo', value: 'activo' },
+      {label: 'Inactivo', value: 'inactivo' },
     
   ];
   console.log(this.marcass)
@@ -77,7 +77,7 @@ export class MarcaListComponent implements OnInit {
     this.isNew = false;
     console.log(marca)
    
-    this.marcaForm.patchValue({ ...marca, estado: 'activo' });
+    this.marcaForm.patchValue({ ...marca});
    
     this.displayDialog = true;
   }
@@ -123,6 +123,7 @@ export class MarcaListComponent implements OnInit {
               this.displayDialog = false;
               this.loadMarcas();
               this.fileUpload.clear(); // 
+              this.selectedImage =null
             });
           } else {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Marca creada sin imagen' });
@@ -139,6 +140,7 @@ export class MarcaListComponent implements OnInit {
             this.loadMarcas();
             this.displayDialog = false;
             this.fileUpload.clear(); // 
+            this.selectedImage =null
            
           });
         });
@@ -148,6 +150,7 @@ export class MarcaListComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Marca actualizada' });
           this.loadMarcas();
           this.displayDialog = false;
+          this.selectedImage =null
         });
       }
     }

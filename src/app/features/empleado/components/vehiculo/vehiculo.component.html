@@ -2,7 +2,7 @@
 <p-toolbar styleClass="mb-4">
   <ng-template pTemplate="left">
     <div class="my-2">
-      <button pButton pRipple label="Nuevo Modelo" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+      <button pButton pRipple label="Nuevo Vehiculo" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
     </div>
   </ng-template>
 </p-toolbar>
@@ -10,38 +10,49 @@
 <p-table [value]="Vehiculos" [paginator]="true" [rows]="10" selectionMode="single" >
   <ng-template pTemplate="header">
     <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>No. Chasis</th>
-      <th>No. Motor</th>
-      <th>No. Placa</th>
-      <th>Estado</th>
-      <th>Color</th>
-      <th>Año</th>
-      <th>Kilometraje</th>
-      <th>Imagen</th>
+      <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+      <th >Imagen</th>
+      <th pSortableColumn="descripcion">Descripción <p-sortIcon field="descripcion"></p-sortIcon></th>
+      <th pSortableColumn="noChasis">No. Chasis <p-sortIcon field="noChasis"></p-sortIcon></th>
+      <th pSortableColumn="noMotor">No. Motor <p-sortIcon field="noMotor"></p-sortIcon></th>
+      <th pSortableColumn="noPlaca">No. Placa <p-sortIcon field="noPlaca"></p-sortIcon></th>
+      <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+      <th pSortableColumn="color">Color <p-sortIcon field="color"></p-sortIcon></th>
+      <th pSortableColumn="anoFabricacion">Año <p-sortIcon field="anoFabricacion"></p-sortIcon></th>
+      <th pSortableColumn="kilometraje">Kilometraje <p-sortIcon field="kilometraje"></p-sortIcon></th>
       <th>Acciones</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-vehiculo>
     <tr>
       <td>{{ vehiculo.nombre }}</td>
+      <td>
+               
+        <p-image 
+        [src]="vehiculo.imagenes"
+        alt="Imagen de la vehiculo"
+        *ngIf="vehiculo.imagenes"
+        width="100" height="70"
+        [preview]="true" />
+        <span *ngIf="!vehiculo.imagenes">No disponible</span>
+    </td>
       <td>{{ vehiculo.descripcion }}</td>
       <td>{{ vehiculo.noChasis }}</td>
       <td>{{ vehiculo.noMotor }}</td>
       <td>{{ vehiculo.noPlaca }}</td>
-      <td>{{ vehiculo.estado }}</td>
+      <td>
+        <p-tag 
+          [value]="vehiculo.estado === 'disponible' ? 'Disponible' : vehiculo.estado === 'alquilado' ? 'Alquilado' : 'Mantenimiento'" 
+          [severity]="vehiculo.estado === 'disponible' ? 'success' : vehiculo.estado === 'alquilado' ? 'danger' : 'warning'">
+        </p-tag>
+      </td>
+               
       <td>{{ vehiculo.color }}</td>
       <td>{{ vehiculo.anoFabricacion }}</td>
       <td>{{ vehiculo.kilometraje }}</td>
+
       <td>
-        <ng-container *ngIf="vehiculo.imagenes">
-          <img [src]="vehiculo.imagenes" alt="Imagen del Vehículo" width="50" height="50">
-        </ng-container>
-        <span *ngIf="!vehiculo.imagenes">No disponible</span>
-      </td>
-      <td>
-        <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success" (click)="editVehiculo(vehiculo)"></button>
+        <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mb-1" (click)="editVehiculo(vehiculo)"></button>
         <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteVehiculo(vehiculo.id)"></button>
       </td>
     </tr>
@@ -116,7 +127,7 @@
         <div class="text-red-600 text-sm mt-1" *ngIf="VehiculoForm.get('kilometraje')?.invalid && VehiculoForm.get('kilometraje')?.touched">Kilometraje es requerido y debe ser un valor válido</div>
       </div>
      
-        <label for="imagenes">Imágenes</label> 
+        <label for="imagenes">Imagen</label> 
         
          
         

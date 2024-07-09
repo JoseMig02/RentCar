@@ -23,6 +23,9 @@ export class RentaDevolucionService {
   updateRenta(id: number, renta:RentaDevolucion): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/rents/${id}`, renta);
   }
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/rents/${id}`);
+  }
 
   // Consultar rentas por cliente
   consultarRentasPorCliente(clienteId: number): Observable<RentaDevolucion[]> {

@@ -18,10 +18,10 @@
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Gestión de Marcas</h5>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <!-- <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text"  placeholder="Buscar..." class="w-full sm:w-auto"/>
-                        </span>
+                        </span> -->
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -37,11 +37,19 @@
                     <tr>
                         <td>{{ marca.nombre }}</td>
                         <td>
-                            <img [src]="marca.imagen" alt="Imagen de la Marca" width="50" height="50" *ngIf="marca.imagen" />
+               
+                            <p-image 
+                            [src]="marca.imagen"
+                            alt="Imagen de la Marca"
+                            *ngIf="marca.imagen"
+                            width="100" height="70"
+                            [preview]="true" />
                             <span *ngIf="!marca.imagen">No disponible</span>
                         </td>
                         <td>{{ marca.descripcion }}</td>
-                        <td>{{ marca.estado }}</td>
+                        <td><p-tag [value]="marca.estado ==='activo' ? 'Activo': 'Inactivo'" [severity]="marca.estado === 'activo' ? 'success' : 'danger'"></p-tag></td>
+                      
+                    
                         <td>
                             <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editMarca(marca)"></button>
                             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteMarca(marca.id)"></button>

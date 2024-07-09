@@ -28,7 +28,7 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'UI Components',
+                label: 'Menu',
                 items: [
                     { label: 'Marcas', icon: 'pi pi-fw pi-tags', routerLink: ['/empleado/marcas'] },
                     { label: 'Tipos de vehículos', icon: 'pi pi-fw pi-table', routerLink: ['/empleado/tiposVehiculos'] },

@@ -55,8 +55,8 @@ export class ModeloComponent implements OnInit {
     this.loadModelos();
     this.loadMarcas();
     this.estados = [
-      { label: 'activo', value: 'activo' },
-      { label: 'inactivo', value: 'inactivo' }
+      { label: 'Activo', value: 'activo' },
+      { label: 'Inactivo', value: 'inactivo' }
     ];
   }
 
@@ -71,7 +71,8 @@ export class ModeloComponent implements OnInit {
 
   loadMarcas(): void {
     this.marcaService.getAll().subscribe((data: Marca[]) => {
-      this.marcas = data;
+      this.marcas = data.filter(marca => marca.estado === 'activo');
+
       this.marcas.forEach(marca => {
         this.marcasMap[marca.id] = marca.nombre;
       });
@@ -127,11 +128,13 @@ export class ModeloComponent implements OnInit {
             this.loadModelos();
             this.displayDialog = false;
             this.fileUpload.clear(); // 
+            this.selectedImage =null
           });
         } else {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Modelo creado sin imagen' });
           this.loadModelos();
           this.displayDialog = false;
+          this.selectedImage =null
         }
       });
     } else { // Escenario de actualización
@@ -142,7 +145,8 @@ export class ModeloComponent implements OnInit {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Modelo actualizado' });
             this.loadModelos();
             this.displayDialog = false;
-            this.fileUpload.clear(); //  // Limpiar imagen seleccionada después de la actualización
+            this.fileUpload.clear();
+            this.selectedImage =null //  // Limpiar imagen seleccionada después de la actualización
           });
         });
       } else {
@@ -151,6 +155,7 @@ export class ModeloComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Modelo actualizado' });
           this.loadModelos();
           this.displayDialog = false;
+          this.selectedImage =null
         });
       }
     }

@@ -15,10 +15,7 @@
           <ng-template pTemplate="caption">
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
               <h5 class="m-0">Gestión de Tipos de Combustible</h5>
-              <span class="block mt-2 md:mt-0 p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" placeholder="Buscar..." class="w-full sm:w-auto"/>
-              </span>
+             
             </div>
           </ng-template>
           <ng-template pTemplate="header">
@@ -35,7 +32,7 @@
               <td>{{ tipoCombustible.nombre }}</td>
               <td>{{ tipoCombustible.descripcion }}</td>
               <td><p-tag [value]="tipoCombustible.esElectrico ? 'Sí' : 'No'" [severity]="tipoCombustible.esElectrico ? 'success' : 'warning'"></p-tag></td>
-              <td><p-tag [value]="tipoCombustible.estado" [severity]="tipoCombustible.estado === 'activo' ? 'success' : 'danger'"></p-tag></td>
+              <td><p-tag [value]="tipoCombustible.estado === 'activo' ? 'Activo' : 'Inactivo'" [severity]="tipoCombustible.estado === 'activo' ? 'success' : 'danger'"></p-tag></td>
               <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editTipoCombustible(tipoCombustible)"></button>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteTipoCombustible(tipoCombustible.id)"></button>

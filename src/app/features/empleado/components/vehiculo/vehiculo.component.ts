@@ -13,6 +13,7 @@ import { TipoCombustibleService } from '../../../../services/tipoCombustible.ser
 import { TipoVehiculo } from '../../../../models/TipoVehiculo';
 import { Observable, map } from 'rxjs';
 import { FileUpload } from 'primeng/fileupload';
+import { error } from 'console';
 
 interface Estado {
   label: string;
@@ -67,7 +68,7 @@ export class VehiculoComponent implements OnInit {
       color: ['', Validators.required],
       anoFabricacion: [''],
       kilometraje: [''],
-      imagenes: [[]],
+      imagenes: [],
       idTipoVehiculo: ['', Validators.required],
       idMarca: ['', Validators.required],
       idModelo: ['', Validators.required],
@@ -82,9 +83,9 @@ export class VehiculoComponent implements OnInit {
     this.loadModelos();
     this.loadTipoCombustible();
     this.estados = [
-      { label: 'disponible', value: 'disponible' },
-      { label: 'alquilado', value: 'alquilado' },
-      { label: 'mantenimiento', value: 'mantenimiento' }
+      { label: 'Disponible', value: 'disponible' },
+      { label: 'Alquilado', value: 'alquilado' },
+      { label: 'Mantenimiento', value: 'mantenimiento' }
     ];
   }
 
@@ -94,18 +95,22 @@ export class VehiculoComponent implements OnInit {
     this.vehiculoService.getAll().subscribe((data: Vehiculo[]) => {
       this.Vehiculos = data;
 
-    });
+    },
+  error =>{
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al obtener vehiculos' });
+  });
   }
 
   loadTipoVehiculos(): void {
     this.tipoVehiculoService.getAll().subscribe((data: TipoVehiculo[]) => {
-      this.tipoVehiculos = data;
+      this.tipoVehiculos = data.filter(tipoVehiculo => tipoVehiculo.estado === 'activo');
+
     });
   }
 
   loadMarcas(): void {
     this.marcaService.getAll().subscribe((data: Marca[]) => {
-      this.marcas = data;
+      this.marcas = data.filter(marca => marca.estado === 'activo');
       this.marcas.forEach(marca => {
         this.marcasMap[marca.id] = marca.nombre;
       });
@@ -114,18 +119,19 @@ export class VehiculoComponent implements OnInit {
 
   loadModelos(): void {
     this.modeloservice.getAll().subscribe((data: Modelo[]) => {
-      this.modelos = data;
+      this.modelos = data.filter(modelo => modelo.estado === 'activo');
     });
   }
 
   loadTipoCombustible() {
     this.tipoCombustibleService.getAll().subscribe((data: TipoCombustible[]) => {
-      this.tipoCombustible = data;
+      this.tipoCombustible = data.filter(tipoCombustible => tipoCombustible.estado === 'activo');
     });
   }
 
   openNew(): void {
     this.isNew = true;
+    this.VehiculoForm.reset();
     this.VehiculoForm.patchValue({ estado: 'activo' });
     this.displayDialog = true;
 
@@ -167,7 +173,9 @@ export class VehiculoComponent implements OnInit {
 
     if (this.isNew) {
       this.vehiculoService.create(vehiculo).subscribe(createdVehiculo => {
+        this.loadVehiculos();
         console.log('sin imagen creado');
+        this.selectedImage =null
         if (this.selectedImage) {
           this.vehiculoService.uploadImages(createdVehiculo.id, this.selectedImage).subscribe(() => {
             console.log('creado todo')
@@ -175,6 +183,7 @@ export class VehiculoComponent implements OnInit {
             this.loadVehiculos();
             this.displayDialog = false;
             this.fileUpload.clear(); // Limpiar el componente FileUpload después de la creación
+            this.selectedImage =null
           });
         } else {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Vehículo creado sin imagen' });
@@ -193,6 +202,7 @@ export class VehiculoComponent implements OnInit {
             this.loadVehiculos();
             this.displayDialog = false;
             this.fileUpload.clear(); // Limpiar el componente FileUpload después de la actualización
+            this.selectedImage =null
           });
         });
       } else {
@@ -202,6 +212,7 @@ export class VehiculoComponent implements OnInit {
           this.loadVehiculos();
           this.displayDialog = false;
           this.fileUpload.clear(); // Limpiar el componente FileUpload después de la actualización
+          this.selectedImage =null
         });
       }
     }
@@ -210,7 +221,7 @@ export class VehiculoComponent implements OnInit {
 
   hideDialog(): void {
     this.displayDialog = false;
-    this.selectedImage = null; // Limpiar la imagen seleccionada al cerrar el diálogo
+
   }
 
   onImageSelect(event: any) {
